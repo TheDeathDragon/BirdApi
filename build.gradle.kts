@@ -4,8 +4,9 @@ plugins {
     id("org.springframework.boot") version "3.0.5"
     id("io.spring.dependency-management") version "1.1.0"
 //    id("org.graalvm.buildtools.native") version "0.9.20"
-    id("com.google.devtools.ksp") version "1.8.20-1.0.10"
+    id("com.google.devtools.ksp") version "1.7.22-1.0.8"
     kotlin("jvm") version "1.7.22"
+    kotlin("kapt") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
 }
 
@@ -26,7 +27,6 @@ repositories {
 val jimmerVersion = "0.7.22"
 
 dependencies {
-    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:${jimmerVersion}")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
 //    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
@@ -42,6 +42,11 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.kafka:spring-kafka-test")
+
+    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:${jimmerVersion}")
+    implementation("org.mapstruct:mapstruct:1.5.3.Final")
+    kapt("org.mapstruct:mapstruct-processor:1.5.3.Final")
+    kapt("org.babyfish.jimmer:jimmer-mapstruct-apt:${jimmerVersion}")
     ksp("org.babyfish.jimmer:jimmer-ksp:${jimmerVersion}")
 }
 

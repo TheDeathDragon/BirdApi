@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 @MappedSuperclass
 interface BaseEntity {
 
-    val createdTime: LocalDateTime
+    val createTime: LocalDateTime
 
-    val modifiedTime: LocalDateTime
+    val updateTime: LocalDateTime
 }

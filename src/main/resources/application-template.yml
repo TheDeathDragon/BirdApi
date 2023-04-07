@@ -1,0 +1,19 @@
+server:
+  port: 3000
+  tomcat:
+    uri-encoding: UTF-8
+    max-http-form-post-size: 50MB
+
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://
+    username:
+    password:
+springdoc:
+  swagger-ui:
+    path: /ui
+jimmer:
+  dialect: org.babyfish.jimmer.sql.dialect.MySqlDialect
+  language: kotlin
+  show-sql: true

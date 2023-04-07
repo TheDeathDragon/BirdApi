@@ -50,6 +50,7 @@ public interface Article : BaseEntity {
 
     /**
      *  文章标题 */
+    @Key
     val title: String
 
     /**
