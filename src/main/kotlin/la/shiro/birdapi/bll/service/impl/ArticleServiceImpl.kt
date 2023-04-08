@@ -60,7 +60,7 @@ class ArticleServiceImpl(
         return id?.let {
             articleInput?.let {
                 articleInput.id = id
-                articleRepository.update(articleInput.toEntity())
+                articleRepository.update(articleInput)
             }
         }
     }

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface ArticleCollectionRepository : KRepository<ArticleCollection, Long> {
+    fun findByUserId(userId: Long): List<ArticleCollection>
+    fun findByArticleId(articleId: Long): List<ArticleCollection>
 
 }
 

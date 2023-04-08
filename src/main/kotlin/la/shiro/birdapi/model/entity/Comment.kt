@@ -47,6 +47,5 @@ interface Comment : BaseEntity {
 
     /**
      *  评论是否发布(0待审核1发布) */
-    @Column(name = "is_published")
-    val isPublished: String
+    val published: String
 }
