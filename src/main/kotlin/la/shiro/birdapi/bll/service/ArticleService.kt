@@ -1,4 +1,4 @@
-package la.shiro.birdapi.bll.service.impl
+package la.shiro.birdapi.bll.service
 
 import la.shiro.birdapi.model.entity.Article
 import la.shiro.birdapi.model.input.ArticleInput
@@ -14,15 +14,15 @@ interface ArticleService {
 
     fun getArticleById(id: Long?): Article?
 
-    fun getArticleByIds(ids: List<Long?>?): List<Article?>?
+    fun getArticleByIds(ids: List<Long>?): List<Article>?
 
-    fun getArticleByTitle(title: String?, pageable: Pageable?): Page<Article?>?
+    fun getArticleByTitle(title: String?, pageable: Pageable): Page<Article>?
 
-    fun getArticles(pageable: Pageable?): Page<Article?>?
+    fun getArticles(pageable: Pageable): Page<Article>?
 
-    fun getArticlesByCategoryId(categoryId: Long?, pageable: Pageable?): Page<Article?>?
+    fun getArticlesByCategoryId(categoryId: Long?, pageable: Pageable): Page<Article>?
 
-    fun getHotArticles(): List<Article?>?
+    fun getHotArticles(): List<Article>?
 
     fun addArticle(articleInput: ArticleInput?): Article?
 
@@ -32,6 +32,6 @@ interface ArticleService {
 
     fun deleteArticleById(id: Long?): Boolean
 
-    fun deleteArticleByIds(ids: List<Long?>?): Int
+    fun deleteArticleByIds(ids: List<Long>?): Int
 
 }

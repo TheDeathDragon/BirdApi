@@ -1,58 +1,40 @@
 package la.shiro.birdapi.util
 
+import la.shiro.birdapi.model.enums.ResponseCodeEnum
+
 /**
  *  author: Rin Shiro
  *  Date: 23/4/8 0:09
  *  Description :
  */
-data class ResponseWrapper(private var code: Int, private var message: String, private var data: Any?) {
-    companion object {
-        fun success(data: Any?): ResponseWrapper {
-            return ResponseWrapper(200, "success", data)
-        }
+data class ApiResponse<T>(val msg: String, val code: Int, val data: T?)
 
-        fun success(data: Any?, code: Int): ResponseWrapper {
-            return ResponseWrapper(code, "success", data)
-        }
+object ResponseWrapper {
+    fun <T> success(data: T? = null): ApiResponse<T> {
+        return ApiResponse(ResponseCodeEnum.SUCCESS.msg, ResponseCodeEnum.SUCCESS.code, data)
+    }
 
-        fun success(data: Any?, message: String): ResponseWrapper {
-            return ResponseWrapper(200, message, data)
-        }
+    fun <T> success(
+        msg: String = ResponseCodeEnum.SUCCESS.msg,
+        code: Int = ResponseCodeEnum.SUCCESS.code,
+        data: T? = null
+    ): ApiResponse<T> {
+        return ApiResponse(msg, code, data)
+    }
 
-        fun success(code: Int, message: String): ResponseWrapper {
-            return ResponseWrapper(code, message, null)
-        }
+    fun <T> error(): ApiResponse<T> {
+        return ApiResponse(ResponseCodeEnum.SYSTEM_ERROR.msg, ResponseCodeEnum.SYSTEM_ERROR.code, null)
+    }
 
-        fun success(data: Any?, code: Int, message: String): ResponseWrapper {
-            return ResponseWrapper(code, message, data)
-        }
+    fun <T> error(msg: String): ApiResponse<T> {
+        return ApiResponse(msg, ResponseCodeEnum.SYSTEM_ERROR.code, null)
+    }
 
-        fun error(): ResponseWrapper {
-            return ResponseWrapper(500, "error", null)
-        }
-
-        fun error(message: String): ResponseWrapper {
-            return ResponseWrapper(500, message, null)
-        }
-
-        fun error(data: Any?): ResponseWrapper {
-            return ResponseWrapper(500, "error", data)
-        }
-
-        fun error(data: Any?, code: Int): ResponseWrapper {
-            return ResponseWrapper(code, "error", data)
-        }
-
-        fun error(data: Any?, message: String): ResponseWrapper {
-            return ResponseWrapper(500, message, data)
-        }
-
-        fun error(code: Int, message: String): ResponseWrapper {
-            return ResponseWrapper(code, message, null)
-        }
-
-        fun error(data: Any?, code: Int, message: String): ResponseWrapper {
-            return ResponseWrapper(code, message, data)
-        }
+    fun <T> error(
+        msg: String = ResponseCodeEnum.SYSTEM_ERROR.msg,
+        code: Int = ResponseCodeEnum.SYSTEM_ERROR.code,
+        data: T? = null
+    ): ApiResponse<T> {
+        return ApiResponse(msg, code, data)
     }
 }

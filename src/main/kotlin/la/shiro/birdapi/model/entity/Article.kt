@@ -71,13 +71,11 @@ public interface Article : BaseEntity {
 
     /**
      *  文章是否置顶(0否/1是) */
-    @Column(name = "is_top")
-    val isTop: String
+    val top: String
 
     /**
      *  文章是否允许评论(0否/1是) */
-    @Column(name = "is_comment")
-    val isComment: String
+    val comment: String
 
     /**
      *  文章审核时间 */

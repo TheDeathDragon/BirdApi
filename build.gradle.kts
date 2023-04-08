@@ -43,9 +43,10 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.kafka:spring-kafka-test")
 
-    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:${jimmerVersion}")
     implementation("org.mapstruct:mapstruct:1.5.3.Final")
     kapt("org.mapstruct:mapstruct-processor:1.5.3.Final")
+
+    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:${jimmerVersion}")
     kapt("org.babyfish.jimmer:jimmer-mapstruct-apt:${jimmerVersion}")
     ksp("org.babyfish.jimmer:jimmer-ksp:${jimmerVersion}")
 }
