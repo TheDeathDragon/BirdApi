@@ -16,9 +16,9 @@ interface ArticleService {
 
     fun getArticleByIds(ids: List<Long>?): List<Article>?
 
-    fun getArticleByTitle(title: String?, pageable: Pageable): Page<Article>?
+    fun getArticleByTitle(title: String?, pageable: Pageable): Page<Article>
 
-    fun getArticles(pageable: Pageable): Page<Article>?
+    fun getArticles(pageable: Pageable): Page<Article>
 
     fun getArticlesByCategoryId(categoryId: Long?, pageable: Pageable): Page<Article>?
 

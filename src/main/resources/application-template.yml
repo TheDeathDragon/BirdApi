@@ -10,6 +10,10 @@ spring:
     url: jdbc:mariadb://
     username:
     password:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 50MB
 springdoc:
   swagger-ui:
     path: /ui

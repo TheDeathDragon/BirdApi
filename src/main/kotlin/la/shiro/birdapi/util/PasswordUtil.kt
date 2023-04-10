@@ -1,12 +1,14 @@
 package la.shiro.birdapi.util
 
 import cn.dev33.satoken.secure.SaSecureUtil
+import org.springframework.stereotype.Component
 
 /**
  *  author: Rin Shiro
  *  Date: 23/4/10 11:49
  *  Description :
  */
+@Component
 object PasswordUtil {
 
     private const val PRIVATE_KEY =

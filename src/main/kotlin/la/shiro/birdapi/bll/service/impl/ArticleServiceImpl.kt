@@ -33,11 +33,11 @@ class ArticleServiceImpl(
         return ids?.let { articleRepository.findByIds(it) }
     }
 
-    override fun getArticleByTitle(title: String?, pageable: Pageable): Page<Article>? {
+    override fun getArticleByTitle(title: String?, pageable: Pageable): Page<Article> {
         return articleRepository.findByTitleContainingOrderByIdDesc(title, pageable)
     }
 
-    override fun getArticles(pageable: Pageable): Page<Article>? {
+    override fun getArticles(pageable: Pageable): Page<Article> {
         return articleRepository.findAll(pageable)
     }
 
