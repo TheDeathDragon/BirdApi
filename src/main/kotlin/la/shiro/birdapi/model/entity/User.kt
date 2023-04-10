@@ -22,9 +22,9 @@ interface User : BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long
-
     /**
      *  用户昵称 */
+    @Key
     val username: String
 
     /**

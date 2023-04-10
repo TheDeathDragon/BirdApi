@@ -49,6 +49,8 @@ dependencies {
     implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:${jimmerVersion}")
     kapt("org.babyfish.jimmer:jimmer-mapstruct-apt:${jimmerVersion}")
     ksp("org.babyfish.jimmer:jimmer-ksp:${jimmerVersion}")
+
+    implementation ("cn.dev33:sa-token-spring-boot3-starter:1.34.0")
 }
 
 tasks.withType<KotlinCompile> {

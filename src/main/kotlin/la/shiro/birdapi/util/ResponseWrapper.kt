@@ -37,4 +37,12 @@ object ResponseWrapper {
     ): ApiResponse<T> {
         return ApiResponse(msg, code, data)
     }
+
+    fun <T> custom(
+        msg: String,
+        code: Int,
+        data: T? = null
+    ): ApiResponse<T> {
+        return ApiResponse(msg, code, data)
+    }
 }

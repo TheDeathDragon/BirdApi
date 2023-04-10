@@ -83,7 +83,7 @@ class ArticleServiceImpl(
     override fun deleteArticleByIds(ids: List<Long>?): Int {
         return ids?.let {
             var count = 0
-            for (id in it) {
+            it.forEach { id ->
                 if (articleRepository.existsById(id)) {
                     articleRepository.deleteById(id)
                     count++
