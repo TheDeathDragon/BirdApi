@@ -32,8 +32,7 @@ class BirdImageServiceImpl(
     }
 
     override fun addBirdImage(imageTitle: String?, birdId: Long?, file: MultipartFile): BirdImage? {
-        val fileUtils = FileUtils()
-        val path = fileUtils.uploadFile(file, DEFAULT_BIRD_IMG_UPLOAD_PATH)
+        val path = FileUtils.uploadFile(file, DEFAULT_BIRD_IMG_UPLOAD_PATH)
         val url = ImageUtil.getImgUrl(path)
         var title = imageTitle
         if (imageTitle == null) {
@@ -67,7 +66,7 @@ class BirdImageServiceImpl(
             try {
                 val birdImage = birdImageRepository.findById(id).orElse(null)
                 birdImage?.let {
-                    FileUtils().deleteFile(it.path)
+                    FileUtils.deleteFile(it.path)
                 }
             } catch (e: Exception) {
                 println("deleteArticleImage --> Failed to delete file --> id = $id")
@@ -80,18 +79,7 @@ class BirdImageServiceImpl(
     }
 
     override fun deleteBirdImageByBirdId(birdId: Long): Int {
-        var count = 0
-        val birdImages = birdImageRepository.findAllByBirdId(birdId)
-        birdImages.forEach {
-            try {
-                FileUtils().deleteFile(it.path)
-            } catch (e: Exception) {
-                println("deleteArticleImage --> Failed to delete file --> path = ${it.path}")
-            }
-            birdImageRepository.deleteById(it.id)
-            count++
-        }
-        return count
+        return birdImageRepository.deleteBirdImageByBirdId(birdId)
     }
 
     override fun deleteBirdImageByIds(ids: List<Long>): Int {
@@ -100,7 +88,7 @@ class BirdImageServiceImpl(
             try {
                 val birdImage = birdImageRepository.findById(it).orElse(null)
                 birdImage?.let {
-                    FileUtils().deleteFile(birdImage.path)
+                    FileUtils.deleteFile(birdImage.path)
                 }
             } catch (e: Exception) {
                 println("deleteArticleImage --> Failed to delete file --> id = $it")

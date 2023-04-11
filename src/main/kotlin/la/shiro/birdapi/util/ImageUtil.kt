@@ -14,7 +14,7 @@ import java.nio.file.Path
  */
 
 @Component
-class ImageUtil {
+object ImageUtil {
 
 
     /**
@@ -40,14 +40,14 @@ class ImageUtil {
             .toFile(destination.toFile())
     }
 
-    companion object {
-        fun getImgUrl(path: String): String? {
-            return if (path.isNotEmpty()) {
-                "http://localhost:8080$path"
-            } else {
-                null
-            }
+
+    fun getImgUrl(path: String): String? {
+        return if (path.isNotEmpty()) {
+            "http://localhost:8080$path"
+        } else {
+            null
         }
     }
+
 }
 

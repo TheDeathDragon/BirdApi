@@ -16,7 +16,7 @@ import java.util.*
  */
 
 @Component
-class FileUtils {
+object FileUtils {
 
     /**
      * 上传文件到指定目录
@@ -38,18 +38,12 @@ class FileUtils {
             Files.createDirectories(path)
         }
         val filename = UUID.randomUUID().toString() + ".jpg"
-        // val filename = file.originalFilename ?: throw IOException("Invalid file name")
         val destination = path.resolve(filename)
         Files.copy(file.inputStream, destination, StandardCopyOption.REPLACE_EXISTING)
-        val imageUtil = ImageUtil()
         when (uploadPath) {
-            DEFAULT_ARTICLE_IMG_UPLOAD_PATH -> imageUtil.convertToJpg(
-                destination,
-                DEFAULT_ARTICLE_IMG_UPLOAD_MAX_RESOLUTION
-            )
-
-            DEFAULT_BIRD_IMG_UPLOAD_PATH -> imageUtil.convertToJpg(destination, DEFAULT_BIRD_IMG_UPLOAD_MAX_RESOLUTION)
-            DEFAULT_AVATAR_UPLOAD_PATH -> imageUtil.convertToJpg(destination, DEFAULT_AVATAR_UPLOAD_MAX_RESOLUTION)
+            DEFAULT_ARTICLE_IMG_UPLOAD_PATH -> ImageUtil.convertToJpg(destination, DEFAULT_ARTICLE_IMG_UPLOAD_MAX_RESOLUTION)
+            DEFAULT_BIRD_IMG_UPLOAD_PATH -> ImageUtil.convertToJpg(destination, DEFAULT_BIRD_IMG_UPLOAD_MAX_RESOLUTION)
+            DEFAULT_AVATAR_UPLOAD_PATH -> ImageUtil.convertToJpg(destination, DEFAULT_AVATAR_UPLOAD_MAX_RESOLUTION)
         }
         return uploadPath + filename
     }

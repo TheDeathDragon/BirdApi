@@ -1,6 +1,7 @@
 package la.shiro.birdapi.bll.service.impl
 
 import la.shiro.birdapi.bll.service.BirdService
+import la.shiro.birdapi.dal.BirdImageRepository
 import la.shiro.birdapi.dal.BirdRepository
 import la.shiro.birdapi.model.entity.Bird
 import la.shiro.birdapi.model.input.BirdInput
@@ -16,7 +17,10 @@ import org.springframework.transaction.annotation.Transactional
  */
 @Transactional
 @Service
-class BirdServiceImpl(private val birdRepository: BirdRepository) : BirdService {
+class BirdServiceImpl(
+    private val birdRepository: BirdRepository,
+    private val birdImageRepository: BirdImageRepository
+) : BirdService {
     override fun getBirdById(id: Long?): Bird? {
         if (id == null) {
             return null
@@ -75,6 +79,7 @@ class BirdServiceImpl(private val birdRepository: BirdRepository) : BirdService 
         return id?.let {
             if (birdRepository.existsById(it)) {
                 birdRepository.deleteById(it)
+                birdImageRepository.deleteBirdImageByBirdId(it)
                 true
             } else false
         } ?: false
@@ -86,6 +91,7 @@ class BirdServiceImpl(private val birdRepository: BirdRepository) : BirdService 
             ids.forEach { id ->
                 if (birdRepository.existsById(id)) {
                     birdRepository.deleteById(id)
+                    birdImageRepository.deleteBirdImageByBirdId(id)
                     count++
                 }
             }

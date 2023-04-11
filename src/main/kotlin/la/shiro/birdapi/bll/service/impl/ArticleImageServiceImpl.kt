@@ -33,8 +33,7 @@ class ArticleImageServiceImpl(
     }
 
     override fun addArticleImage(imageTitle: String?, articleId: Long?, file: MultipartFile): ArticleImage? {
-        val fileUtils = FileUtils()
-        val path = fileUtils.uploadFile(file, DEFAULT_ARTICLE_IMG_UPLOAD_PATH)
+        val path = FileUtils.uploadFile(file, DEFAULT_ARTICLE_IMG_UPLOAD_PATH)
         val url = ImageUtil.getImgUrl(path)
         var title = imageTitle
         if (imageTitle == null) {
@@ -68,7 +67,7 @@ class ArticleImageServiceImpl(
             try {
                 val articleImage = articleImageRepository.findById(id).orElse(null)
                 articleImage?.path?.let {
-                    FileUtils().deleteFile(it)
+                    FileUtils.deleteFile(it)
                 }
             } catch (e: Exception) {
                 println("deleteArticleImage --> Failed to delete file --> id = $id")
@@ -79,18 +78,7 @@ class ArticleImageServiceImpl(
     }
 
     override fun deleteArticleImageByArticleId(articleId: Long): Int {
-        var count = 0
-        val articleImages: List<ArticleImage> = articleImageRepository.findAllByArticleId(articleId)
-        articleImages.forEach {
-            try {
-                articleImageRepository.deleteById(it.id)
-                it.path.let { it1 -> FileUtils().deleteFile(it1) }
-                count++
-            } catch (e: Exception) {
-                println("deleteArticleImageByArticleId --> Failed to delete file : ${it.path}")
-            }
-        }
-        return count
+        return articleImageRepository.deleteArticleImageByArticleId(articleId)
     }
 
     override fun deleteArticleImageByIds(ids: List<Long>): Int {
@@ -99,7 +87,7 @@ class ArticleImageServiceImpl(
             try {
                 val articleImage = articleImageRepository.findById(it).orElse(null)
                 articleImage?.path?.let {
-                    FileUtils().deleteFile(articleImage.path)
+                    FileUtils.deleteFile(articleImage.path)
                 }
                 articleImageRepository.deleteById(it)
                 count++

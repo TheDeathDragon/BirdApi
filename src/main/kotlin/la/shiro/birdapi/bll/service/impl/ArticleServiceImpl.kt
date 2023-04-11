@@ -1,6 +1,7 @@
 package la.shiro.birdapi.bll.service.impl
 
 import la.shiro.birdapi.bll.service.ArticleService
+import la.shiro.birdapi.dal.ArticleImageRepository
 import la.shiro.birdapi.dal.ArticleRepository
 import la.shiro.birdapi.model.entity.Article
 import la.shiro.birdapi.model.input.ArticleInput
@@ -17,7 +18,8 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Service
 class ArticleServiceImpl(
-    private val articleRepository: ArticleRepository
+    private val articleRepository: ArticleRepository,
+    private val articleImageRepository: ArticleImageRepository
 ) : ArticleService {
     override fun getArticleById(id: Long?): Article? {
         val article = id?.let {
@@ -74,6 +76,7 @@ class ArticleServiceImpl(
         return id?.let {
             if (articleRepository.existsById(it)) {
                 articleRepository.deleteById(it)
+                articleImageRepository.deleteArticleImageByArticleId(it)
                 true
             } else false
         } ?: false
@@ -85,6 +88,7 @@ class ArticleServiceImpl(
             it.forEach { id ->
                 if (articleRepository.existsById(id)) {
                     articleRepository.deleteById(id)
+                    articleImageRepository.deleteArticleImageByArticleId(id)
                     count++
                 }
             }

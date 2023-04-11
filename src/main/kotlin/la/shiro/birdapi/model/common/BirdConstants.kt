@@ -15,9 +15,6 @@ const val DEFAULT_PAGE_SIZE = "10"
 // 默认父级ID
 const val DEFAULT_PID: Long = 0
 
-// 默认图片后缀
-const val DEFAULT_IMG_SUFFIX = ".jpg"
-
 // 默认热门文章数量
 const val DEFAULT_ARTICLE_HOT_COUNT = 10
 
