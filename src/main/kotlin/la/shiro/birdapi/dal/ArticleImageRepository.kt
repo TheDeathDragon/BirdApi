@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface ArticleImageRepository : KRepository<ArticleImage, Long> {
-
+    fun findAllByArticleId(articleId: Long): List<ArticleImage>
 }
 

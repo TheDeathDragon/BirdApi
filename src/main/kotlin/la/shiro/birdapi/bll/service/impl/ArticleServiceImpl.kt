@@ -51,7 +51,6 @@ class ArticleServiceImpl(
 
     override fun addArticle(articleInput: ArticleInput?): Article? {
         return articleInput?.let {
-            println(it)
             articleRepository.insert(it)
         }
     }

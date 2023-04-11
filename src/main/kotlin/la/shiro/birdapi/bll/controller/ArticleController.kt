@@ -22,7 +22,7 @@ class ArticleController(
     private val articleService: ArticleService
 ) {
     @GetMapping("/{id}")
-    fun getArticleById(@PathVariable id: Long?): ApiResponse<Article> {
+    fun getArticleById(@PathVariable id: Long): ApiResponse<Article> {
         return ResponseWrapper.success(articleService.getArticleById(id))
     }
 
@@ -82,18 +82,18 @@ class ArticleController(
     }
 
     @PutMapping("/{id}")
-    fun updateArticleById(@PathVariable id: Long?,
+    fun updateArticleById(@PathVariable id: Long,
                           @RequestBody articleInput: ArticleInput?): ApiResponse<Article> {
         return ResponseWrapper.success(articleService.updateArticleById(id, articleInput))
     }
 
     @DeleteMapping("/{id}")
-    fun deleteArticleById(@PathVariable id: Long?): ApiResponse<Boolean> {
+    fun deleteArticleById(@PathVariable id: Long): ApiResponse<Boolean> {
         return ResponseWrapper.success(articleService.deleteArticleById(id))
     }
 
     @DeleteMapping("/ids")
-    fun deleteArticleByIds(@RequestParam ids: List<Long>?): ApiResponse<Int> {
+    fun deleteArticleByIds(@RequestParam ids: List<Long>): ApiResponse<Int> {
         return ResponseWrapper.success(articleService.deleteArticleByIds(ids))
     }
 }

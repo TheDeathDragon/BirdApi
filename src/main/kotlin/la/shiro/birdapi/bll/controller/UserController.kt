@@ -32,7 +32,7 @@ class UserController(
     }
 
     @GetMapping("/{id}")
-    fun getUserById(@PathVariable id: Long?): ApiResponse<User> {
+    fun getUserById(@PathVariable id: Long): ApiResponse<User> {
         return ResponseWrapper.success(userService.getUserById(id))
     }
 

@@ -64,4 +64,14 @@ class ArticleImageController(
     fun deleteArticleImage(@PathVariable id: Long): ApiResponse<Boolean> {
         return ResponseWrapper.success(articleImageService.deleteArticleImage(id))
     }
+
+    @DeleteMapping("/article/{articleId}")
+    fun deleteArticleImageByArticleId(@PathVariable articleId: Long): ApiResponse<Boolean> {
+        return ResponseWrapper.success(articleImageService.deleteArticleImageByArticleId(articleId))
+    }
+
+    @DeleteMapping("/ids")
+    fun deleteArticleImageByIds(@RequestBody ids: List<Long>): ApiResponse<Int> {
+        return ResponseWrapper.success(articleImageService.deleteArticleImageByIds(ids))
+    }
 }

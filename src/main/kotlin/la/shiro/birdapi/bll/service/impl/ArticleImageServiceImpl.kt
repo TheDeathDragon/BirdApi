@@ -2,10 +2,11 @@ package la.shiro.birdapi.bll.service.impl
 
 import la.shiro.birdapi.bll.service.ArticleImageService
 import la.shiro.birdapi.dal.ArticleImageRepository
+import la.shiro.birdapi.dal.ArticleRepository
 import la.shiro.birdapi.model.common.DEFAULT_ARTICLE_IMG_UPLOAD_PATH
 import la.shiro.birdapi.model.entity.ArticleImage
 import la.shiro.birdapi.model.input.ArticleImageInput
-import la.shiro.birdapi.util.FileUploadUtils
+import la.shiro.birdapi.util.FileUtils
 import la.shiro.birdapi.util.ImageUtil
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -32,8 +33,9 @@ class ArticleImageServiceImpl(
     }
 
     override fun addArticleImage(imageTitle: String?, articleId: Long?, file: MultipartFile): ArticleImage? {
-        val fileUploadUtils = FileUploadUtils()
-        val url = fileUploadUtils.uploadFile(file, DEFAULT_ARTICLE_IMG_UPLOAD_PATH)
+        val fileUtils = FileUtils()
+        val path = fileUtils.uploadFile(file, DEFAULT_ARTICLE_IMG_UPLOAD_PATH)
+        val url = ImageUtil.getImgUrl(path)
         var title = imageTitle
         if (imageTitle == null) {
             file.originalFilename?.let {
@@ -47,6 +49,7 @@ class ArticleImageServiceImpl(
             id = null,
             title = title,
             url = url,
+            path = path,
             articleId = articleId,
         )
         return articleImageRepository.insert(articleInput)
@@ -62,17 +65,39 @@ class ArticleImageServiceImpl(
 
     override fun deleteArticleImage(id: Long): Boolean {
         return if (articleImageRepository.existsById(id)) {
+            try {
+                val articleImage = articleImageRepository.findById(id).orElse(null)
+                articleImage?.path?.let {
+                    FileUtils().deleteFile(it)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             articleImageRepository.deleteById(id)
             return true
         } else false
     }
 
     override fun deleteArticleImageByArticleId(articleId: Long): Boolean {
-        TODO("Not yet implemented")
+        val articleImages: List<ArticleImage> = articleImageRepository.findAllByArticleId(articleId)
+        articleImages.forEach {
+            try {
+                it.path.let { it1 -> FileUtils().deleteFile(it1) }
+            } catch (e: Exception) {
+                println("deleteArticleImageByArticleId --> Failed to delete file : ${it.path}")
+            }
+        }
+        return false
     }
 
     override fun deleteArticleImageByIds(ids: List<Long>): Int {
-        TODO("Not yet implemented")
+        var count = 0
+        ids.forEach {
+            if (deleteArticleImage(it)) {
+                count++
+            }
+        }
+        return count
     }
 
 }

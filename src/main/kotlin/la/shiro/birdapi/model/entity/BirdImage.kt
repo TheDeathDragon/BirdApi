@@ -29,4 +29,13 @@ interface BirdImage : BaseEntity {
     /**
      *  鸟类图片URL */
     val url: String
+
+    /**
+     *  鸟类图片路径 */
+    val path: String
+
+    /**
+     *  鸟类ID */
+    @Column(name = "bird_id")
+    val birdId : Long
 }

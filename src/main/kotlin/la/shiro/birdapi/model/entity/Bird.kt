@@ -27,6 +27,16 @@ interface Bird : BaseEntity {
     val species: Long
 
     /**
+     *  鸟类访问量 */
+    @Column(name = "view_count")
+    val viewCount: Long
+
+    /**
+     *  鸟类点赞量 */
+    @Column(name = "like_count")
+    val likeCount: Long
+
+    /**
      *  鸟类名称 */
     val name: String
 

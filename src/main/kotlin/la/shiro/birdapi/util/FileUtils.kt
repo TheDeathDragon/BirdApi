@@ -1,5 +1,7 @@
 package la.shiro.birdapi.util
 
+import la.shiro.birdapi.model.common.DEFAULT_UPLOAD_PATH_PREFIX_LINUX
+import la.shiro.birdapi.model.common.DEFAULT_UPLOAD_PATH_PREFIX_WINDOWS
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
@@ -15,7 +17,7 @@ import java.util.*
  */
 
 @Component
-class FileUploadUtils {
+class FileUtils {
 
     /**
      * 上传文件到指定目录
@@ -28,9 +30,9 @@ class FileUploadUtils {
     @Throws(IOException::class)
     fun uploadFile(file: MultipartFile, uploadPath: String): String {
         val pathPrefix = when (getOS()) {
-            "Windows" -> "C:\\Users\\Rin-3900X\\Desktop\\Blog\\static"
-            "Linux" -> "/home/www/static"
-            else -> ""
+            "Windows" -> DEFAULT_UPLOAD_PATH_PREFIX_WINDOWS
+            "Linux" -> DEFAULT_UPLOAD_PATH_PREFIX_LINUX
+            else -> DEFAULT_UPLOAD_PATH_PREFIX_LINUX
         }
         val path = Paths.get(pathPrefix, uploadPath)
         if (!Files.exists(path)) {
@@ -41,8 +43,8 @@ class FileUploadUtils {
         val destination = path.resolve(filename)
         Files.copy(file.inputStream, destination, StandardCopyOption.REPLACE_EXISTING)
         val imageUtil = ImageUtil()
-        imageUtil.convertToJpg(destination.toString(), destination.toString())
-        return destination.toString()
+        imageUtil.convertToJpg(destination)
+        return uploadPath + filename
     }
 
     /**
@@ -53,7 +55,13 @@ class FileUploadUtils {
      */
     @Throws(IOException::class)
     fun deleteFile(filePath: String) {
-        Files.deleteIfExists(Paths.get(filePath))
+        val pathPrefix = when (getOS()) {
+            "Windows" -> DEFAULT_UPLOAD_PATH_PREFIX_WINDOWS
+            "Linux" -> DEFAULT_UPLOAD_PATH_PREFIX_LINUX
+            else -> DEFAULT_UPLOAD_PATH_PREFIX_LINUX
+        }
+        val path = Paths.get(pathPrefix, filePath)
+        Files.deleteIfExists(path)
     }
 
     /**
@@ -66,8 +74,7 @@ class FileUploadUtils {
         return when {
             osName.contains("windows") -> "Windows"
             osName.contains("linux") -> "Linux"
-            osName.contains("mac") -> "macOS"
-            else -> "Unknown"
+            else -> ""
         }
     }
 }

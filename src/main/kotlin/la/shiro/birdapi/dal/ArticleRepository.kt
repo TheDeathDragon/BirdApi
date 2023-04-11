@@ -32,7 +32,7 @@ interface ArticleRepository : KRepository<Article, Long> {
     ): Page<Article>
 
     fun findTop10ByOrderByViewCountDesc(
-    ): List<Article>
+    ): List<Article>?
 
     fun updateViewCountById(
         id: Long,

@@ -1,7 +1,7 @@
 package la.shiro.birdapi.model.input
 
 import io.swagger.v3.oas.annotations.media.Schema
-import la.shiro.birdapi.model.entity.ArticleImage
+import la.shiro.birdapi.model.entity.BirdImage
 import org.babyfish.jimmer.Input
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper
@@ -10,10 +10,10 @@ import org.mapstruct.factory.Mappers
 
 /**
  *  author: Rin Shiro
- *  Date: 23/4/11 1:13
+ *  Date: 23/4/11 10:35
  *  Description :
  */
-data class ArticleImageInput(
+data class BirdImageInput(
     @Schema(hidden = true)
     var id: Long?,
     var title: String?,
@@ -21,13 +21,13 @@ data class ArticleImageInput(
     var url: String?,
     var path: String?,
     var articleId: Long?
-) : Input<ArticleImage> {
-    override fun toEntity(): ArticleImage = CONVERTER.toArticleImage(this)
+) : Input<BirdImage> {
+    override fun toEntity(): BirdImage = CONVERTER.toBirdImage(this)
 
     @Mapper
     internal interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toArticleImage(articleImageInput: ArticleImageInput): ArticleImage
+        fun toBirdImage(birdImageInput: BirdImageInput): BirdImage
     }
 
     companion object {

@@ -30,6 +30,11 @@ const val DEFAULT_IMG_UPLOAD_MAX_RESOLUTION = 1920
 // 默认头像上传最大大小
 const val DEFAULT_AVATAR_UPLOAD_MAX_RESOLUTION = 300
 
+// 默认上传路径前缀
+var DEFAULT_UPLOAD_PATH_PREFIX_WINDOWS = ""
+
+var DEFAULT_UPLOAD_PATH_PREFIX_LINUX = ""
+
 // 默认文章图片上传路径
 const val DEFAULT_ARTICLE_IMG_UPLOAD_PATH = "/upload/article/"
 

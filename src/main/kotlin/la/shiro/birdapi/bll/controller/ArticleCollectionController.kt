@@ -38,7 +38,7 @@ class ArticleCollectionController(
     }
 
     @GetMapping("/{id}")
-    fun getArticleCollectionById(@PathVariable id: Long?): ApiResponse<ArticleCollection> {
+    fun getArticleCollectionById(@PathVariable id: Long): ApiResponse<ArticleCollection> {
         return ResponseWrapper.success(articleCollectionService.getArticleCollectionById(id))
     }
 
@@ -64,14 +64,14 @@ class ArticleCollectionController(
 
     @PutMapping("/{id}")
     fun updateArticleCollectionById(
-        @PathVariable id: Long?,
+        @PathVariable id: Long,
         @RequestBody articleCollectionInput: ArticleCollectionInput
     ): ApiResponse<ArticleCollection> {
         return ResponseWrapper.success(articleCollectionService.updateArticleCollectionById(id, articleCollectionInput))
     }
 
     @DeleteMapping("/{id}")
-    fun deleteArticleCollectionById(@PathVariable id: Long?): ApiResponse<Boolean> {
+    fun deleteArticleCollectionById(@PathVariable id: Long): ApiResponse<Boolean> {
         return ResponseWrapper.success(articleCollectionService.deleteArticleCollectionById(id))
     }
 

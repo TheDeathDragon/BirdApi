@@ -51,6 +51,7 @@ dependencies {
     ksp("org.babyfish.jimmer:jimmer-ksp:${jimmerVersion}")
 
     implementation ("cn.dev33:sa-token-spring-boot3-starter:1.34.0")
+    implementation("net.coobird:thumbnailator:0.4.19")
 }
 
 tasks.withType<KotlinCompile> {
