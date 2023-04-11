@@ -2,8 +2,11 @@ package la.shiro.birdapi.bll.service.impl
 
 import la.shiro.birdapi.bll.service.BirdImageService
 import la.shiro.birdapi.dal.BirdImageRepository
+import la.shiro.birdapi.model.common.DEFAULT_BIRD_IMG_UPLOAD_PATH
 import la.shiro.birdapi.model.entity.BirdImage
 import la.shiro.birdapi.model.input.BirdImageInput
+import la.shiro.birdapi.util.FileUtils
+import la.shiro.birdapi.util.ImageUtil
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -21,30 +24,90 @@ class BirdImageServiceImpl(
     private val birdImageRepository: BirdImageRepository
 ) : BirdImageService {
     override fun getBirdImages(pageable: Pageable): Page<BirdImage>? {
-        TODO("Not yet implemented")
+        return birdImageRepository.findAll(pageable)
     }
 
     override fun getBirdImageById(id: Long): BirdImage? {
-        TODO("Not yet implemented")
+        return birdImageRepository.findById(id).orElse(null)
     }
 
-    override fun addBirdImage(imageTitle: String?, articleId: Long?, file: MultipartFile): BirdImage? {
-        TODO("Not yet implemented")
+    override fun addBirdImage(imageTitle: String?, birdId: Long?, file: MultipartFile): BirdImage? {
+        val fileUtils = FileUtils()
+        val path = fileUtils.uploadFile(file, DEFAULT_BIRD_IMG_UPLOAD_PATH)
+        val url = ImageUtil.getImgUrl(path)
+        var title = imageTitle
+        if (imageTitle == null) {
+            file.originalFilename?.let {
+                title = it.substring(
+                    0, it.lastIndexOf(".")
+                )
+            }
+            title = (System.currentTimeMillis().toString() + "_" + title).replace(" ", "_")
+        }
+        val birdImageInput = BirdImageInput(
+            id = null,
+            title = title,
+            url = url,
+            path = path,
+            birdId = birdId,
+        )
+        return birdImageRepository.insert(birdImageInput)
     }
 
     override fun updateBirdImage(birdImageInput: BirdImageInput?): BirdImage? {
-        TODO("Not yet implemented")
+        return birdImageInput?.let {
+            it.id?.let {
+                birdImageRepository.update(birdImageInput)
+            }
+        }
     }
 
     override fun deleteBirdImage(id: Long): Boolean {
-        TODO("Not yet implemented")
+        return if (birdImageRepository.existsById(id)) {
+            try {
+                val birdImage = birdImageRepository.findById(id).orElse(null)
+                birdImage?.let {
+                    FileUtils().deleteFile(it.path)
+                }
+            } catch (e: Exception) {
+                println("deleteArticleImage --> Failed to delete file --> id = $id")
+            }
+            birdImageRepository.deleteById(id)
+            return true
+        } else {
+            false
+        }
     }
 
-    override fun deleteBirdImageByArticleId(articleId: Long): Boolean {
-        TODO("Not yet implemented")
+    override fun deleteBirdImageByBirdId(birdId: Long): Int {
+        var count = 0
+        val birdImages = birdImageRepository.findAllByBirdId(birdId)
+        birdImages.forEach {
+            try {
+                FileUtils().deleteFile(it.path)
+            } catch (e: Exception) {
+                println("deleteArticleImage --> Failed to delete file --> path = ${it.path}")
+            }
+            birdImageRepository.deleteById(it.id)
+            count++
+        }
+        return count
     }
 
     override fun deleteBirdImageByIds(ids: List<Long>): Int {
-        TODO("Not yet implemented")
+        var count = 0
+        ids.forEach {
+            try {
+                val birdImage = birdImageRepository.findById(it).orElse(null)
+                birdImage?.let {
+                    FileUtils().deleteFile(birdImage.path)
+                }
+            } catch (e: Exception) {
+                println("deleteArticleImage --> Failed to delete file --> id = $it")
+            }
+            birdImageRepository.deleteById(it)
+            count++
+        }
+        return count
     }
 }

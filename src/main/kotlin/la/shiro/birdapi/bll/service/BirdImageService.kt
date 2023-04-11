@@ -17,13 +17,13 @@ interface BirdImageService {
 
     fun getBirdImageById(id: Long): BirdImage?
 
-    fun addBirdImage(imageTitle: String?, articleId: Long?, file: MultipartFile): BirdImage?
+    fun addBirdImage(imageTitle: String?, birdId: Long?, file: MultipartFile): BirdImage?
 
     fun updateBirdImage(birdImageInput: BirdImageInput?): BirdImage?
 
     fun deleteBirdImage(id: Long): Boolean
 
-    fun deleteBirdImageByArticleId(articleId: Long): Boolean
+    fun deleteBirdImageByBirdId(birdId: Long): Int
 
     fun deleteBirdImageByIds(ids: List<Long>): Int
 }

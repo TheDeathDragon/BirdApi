@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface BirdImageRepository : KRepository<BirdImage, Long> {
-
+    fun findAllByBirdId(birdId: Long): List<BirdImage>
 }
 

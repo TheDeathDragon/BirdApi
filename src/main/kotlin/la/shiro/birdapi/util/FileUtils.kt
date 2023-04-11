@@ -1,7 +1,6 @@
 package la.shiro.birdapi.util
 
-import la.shiro.birdapi.model.common.DEFAULT_UPLOAD_PATH_PREFIX_LINUX
-import la.shiro.birdapi.model.common.DEFAULT_UPLOAD_PATH_PREFIX_WINDOWS
+import la.shiro.birdapi.model.common.*
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
@@ -43,7 +42,15 @@ class FileUtils {
         val destination = path.resolve(filename)
         Files.copy(file.inputStream, destination, StandardCopyOption.REPLACE_EXISTING)
         val imageUtil = ImageUtil()
-        imageUtil.convertToJpg(destination)
+        when (uploadPath) {
+            DEFAULT_ARTICLE_IMG_UPLOAD_PATH -> imageUtil.convertToJpg(
+                destination,
+                DEFAULT_ARTICLE_IMG_UPLOAD_MAX_RESOLUTION
+            )
+
+            DEFAULT_BIRD_IMG_UPLOAD_PATH -> imageUtil.convertToJpg(destination, DEFAULT_BIRD_IMG_UPLOAD_MAX_RESOLUTION)
+            DEFAULT_AVATAR_UPLOAD_PATH -> imageUtil.convertToJpg(destination, DEFAULT_AVATAR_UPLOAD_MAX_RESOLUTION)
+        }
         return uploadPath + filename
     }
 

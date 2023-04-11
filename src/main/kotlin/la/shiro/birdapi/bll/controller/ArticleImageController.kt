@@ -1,6 +1,5 @@
 package la.shiro.birdapi.bll.controller
 
-import io.swagger.v3.oas.annotations.media.Schema
 import la.shiro.birdapi.bll.service.ArticleImageService
 import la.shiro.birdapi.model.common.DEFAULT_PAGE_INDEX
 import la.shiro.birdapi.model.common.DEFAULT_PAGE_SIZE

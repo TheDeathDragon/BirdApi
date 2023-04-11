@@ -20,7 +20,7 @@ data class BirdImageInput(
     @Schema(hidden = true)
     var url: String?,
     var path: String?,
-    var articleId: Long?
+    var birdId: Long?
 ) : Input<BirdImage> {
     override fun toEntity(): BirdImage = CONVERTER.toBirdImage(this)
 

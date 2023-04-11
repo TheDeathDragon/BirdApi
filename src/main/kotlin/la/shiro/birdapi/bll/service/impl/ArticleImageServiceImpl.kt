@@ -71,7 +71,7 @@ class ArticleImageServiceImpl(
                     FileUtils().deleteFile(it)
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                println("deleteArticleImage --> Failed to delete file --> id = $id")
             }
             articleImageRepository.deleteById(id)
             return true
@@ -96,8 +96,15 @@ class ArticleImageServiceImpl(
     override fun deleteArticleImageByIds(ids: List<Long>): Int {
         var count = 0
         ids.forEach {
-            if (deleteArticleImage(it)) {
+            try {
+                val articleImage = articleImageRepository.findById(it).orElse(null)
+                articleImage?.path?.let {
+                    FileUtils().deleteFile(articleImage.path)
+                }
+                articleImageRepository.deleteById(it)
                 count++
+            } catch (e: Exception) {
+                println("deleteArticleImageByIds --> Failed to delete file --> id = $it")
             }
         }
         return count

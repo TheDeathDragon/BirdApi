@@ -24,15 +24,19 @@ const val DEFAULT_ARTICLE_HOT_COUNT = 10
 // 默认文章缩略图
 const val DEFAULT_ARTICLE_IMG = "/images/default_thumbnail.jpg"
 
-// 默认图片上传最大大小
-const val DEFAULT_IMG_UPLOAD_MAX_RESOLUTION = 1920
+// 默认文章图片上传最大大小
+const val DEFAULT_ARTICLE_IMG_UPLOAD_MAX_RESOLUTION = 1920
+
+// 默认鸟类图片上传最大大小
+const val DEFAULT_BIRD_IMG_UPLOAD_MAX_RESOLUTION = 2160
 
 // 默认头像上传最大大小
 const val DEFAULT_AVATAR_UPLOAD_MAX_RESOLUTION = 300
 
-// 默认上传路径前缀
+// 默认上传路径前缀 Windows
 var DEFAULT_UPLOAD_PATH_PREFIX_WINDOWS = ""
 
+// 默认上传路径前缀 Linux
 var DEFAULT_UPLOAD_PATH_PREFIX_LINUX = ""
 
 // 默认文章图片上传路径
