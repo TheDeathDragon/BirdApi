@@ -23,7 +23,7 @@ interface ArticleImageService {
 
     fun deleteArticleImage(id: Long): Boolean
 
-    fun deleteArticleImageByArticleId(articleId: Long): Boolean
+    fun deleteArticleImageByArticleId(articleId: Long): Int
 
     fun deleteArticleImageByIds(ids: List<Long>): Int
 

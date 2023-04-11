@@ -78,16 +78,19 @@ class ArticleImageServiceImpl(
         } else false
     }
 
-    override fun deleteArticleImageByArticleId(articleId: Long): Boolean {
+    override fun deleteArticleImageByArticleId(articleId: Long): Int {
+        var count = 0
         val articleImages: List<ArticleImage> = articleImageRepository.findAllByArticleId(articleId)
         articleImages.forEach {
             try {
+                articleImageRepository.deleteById(it.id)
                 it.path.let { it1 -> FileUtils().deleteFile(it1) }
+                count++
             } catch (e: Exception) {
                 println("deleteArticleImageByArticleId --> Failed to delete file : ${it.path}")
             }
         }
-        return false
+        return count
     }
 
     override fun deleteArticleImageByIds(ids: List<Long>): Int {
