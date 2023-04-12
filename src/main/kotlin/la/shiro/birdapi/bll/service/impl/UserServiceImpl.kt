@@ -21,24 +21,24 @@ import java.time.LocalDate
 class UserServiceImpl(
     private val userRepository: UserRepository
 ) : UserService {
-    override fun getUserById(id: Long?): User? {
-        return id?.let { userRepository.findById(it).orElse(null) }
+    override fun getUserById(id: Long): User? {
+        return userRepository.findById(id).orElse(null)
     }
 
     override fun getUserByIds(ids: List<Long>?): List<User>? {
         return ids?.let { userRepository.findByIds(it) }
     }
 
-    override fun getUserByUsername(username: String?): User? {
-        return username?.let { userRepository.findByUsername(it) }
+    override fun getUserByUsername(username: String): User? {
+        return userRepository.findByUsername(username)
     }
 
-    override fun getUserByEmail(email: String?): User? {
-        return email?.let { userRepository.findByEmail(it) }
+    override fun getUserByEmail(email: String): User? {
+        return userRepository.findByEmail(email)
     }
 
-    override fun getUserByPhone(phone: String?): User? {
-        return phone?.let { userRepository.findByPhone(it) }
+    override fun getUserByPhone(phone: String): User? {
+        return userRepository.findByPhone(phone)
     }
 
     override fun getUsers(pageable: Pageable): Page<User>? {
@@ -63,70 +63,62 @@ class UserServiceImpl(
         }
     }
 
-    override fun updateUserById(id: Long?, userInput: UserInput?): Boolean {
-        return id?.let { userInput?.let { it1 -> userRepository.updateById(it, it1) } } ?: false
-    }
-
-    override fun updateUsernameById(id: Long?, username: String?): Boolean {
-
-        return id?.let {
-            username?.let { it1 ->
-                if (userRepository.findByUsername(it1) != null) return false
-                userRepository.updateByIdAndUsername(it, it1)
-            }
+    override fun updateUserById(id: Long, userInput: UserInput?): Boolean {
+        return userInput?.let {
+            userRepository.updateById(id, it)
         } ?: false
     }
 
-    override fun updatePasswordById(id: Long?, password: String?): Boolean {
-        if (id == null || password == null) return false
+    override fun updateUsernameById(id: Long, username: String): Boolean {
+        return if (userRepository.findByUsername(username) != null) {
+            userRepository.updateByIdAndUsername(id, username)
+            true
+        } else false
+    }
+
+    override fun updatePasswordById(id: Long, password: String): Boolean {
         return userRepository.updateByIdAndPassword(id, PasswordUtil.encode(password))
     }
 
-    override fun updateEmailById(id: Long?, email: String?): Boolean {
-        return id?.let {
-            email?.let { it1 ->
-                if (userRepository.findByEmail(it1) != null) return false
-                userRepository.updateByIdAndEmail(it, it1)
-            }
-        } ?: false
+    override fun updateEmailById(id: Long, email: String): Boolean {
+        return if (userRepository.findByEmail(email) != null) {
+            userRepository.updateByIdAndEmail(id, email)
+            true
+        } else false
     }
 
-    override fun updatePhoneById(id: Long?, phone: String?): Boolean {
-        return id?.let {
-            phone?.let { it1 ->
-                if (userRepository.findByPhone(it1) != null) return false
-                userRepository.updateByIdAndPhone(it, it1)
-            }
-        } ?: false
+    override fun updatePhoneById(id: Long, phone: String): Boolean {
+        return if (userRepository.findByPhone(phone) != null) {
+            userRepository.updateByIdAndPhone(id, phone)
+            true
+        } else false
     }
 
-    override fun updateSexById(id: Long?, sex: String?): Boolean {
-        return id?.let { sex?.let { it1 -> userRepository.updateByIdAndSex(it, it1) } } ?: false
+    override fun updateSexById(id: Long, sex: String): Boolean {
+        return userRepository.updateByIdAndSex(id, sex)
     }
 
-    override fun updateWechatById(id: Long?, wechat: String?): Boolean {
-        return id?.let { wechat?.let { it1 -> userRepository.updateByIdAndWechat(it, it1) } } ?: false
+    override fun updateWechatById(id: Long, wechat: String): Boolean {
+        return userRepository.updateByIdAndWechat(id, wechat)
     }
 
-    override fun updateQqById(id: Long?, qq: String?): Boolean {
-        return id?.let { qq?.let { it1 -> userRepository.updateByIdAndQq(it, it1) } } ?: false
+    override fun updateQqById(id: Long, qq: String): Boolean {
+        return userRepository.updateByIdAndQq(id, qq)
     }
 
-    override fun updateAvatarById(id: Long?, avatar: String?): Boolean {
+    override fun updateAvatarById(id: Long, avatar: String): Boolean {
         TODO("Not yet implemented")
     }
 
-    override fun updateBirthdayById(id: Long?, birthday: LocalDate?): Boolean {
-        return id?.let { birthday?.let { it1 -> userRepository.updateByIdAndBirthday(it, it1) } } ?: false
+    override fun updateBirthdayById(id: Long, birthday: LocalDate): Boolean {
+        return userRepository.updateByIdAndBirthday(id, birthday)
     }
 
-    override fun deleteUserById(id: Long?): Boolean {
-        return id?.let {
-            if (userRepository.existsById(it)) {
-                userRepository.deleteById(it)
-                true
-            } else false
-        } ?: false
+    override fun deleteUserById(id: Long): Boolean {
+        return if (userRepository.existsById(id)) {
+            userRepository.deleteById(id)
+            true
+        } else false
     }
 
     override fun deleteUserByIds(ids: List<Long>?): Int {

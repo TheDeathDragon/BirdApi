@@ -28,6 +28,7 @@ interface Category : BaseEntity {
 
     /**
      *  文章分类名称 */
+    @Key
     val name: String
 
     /**

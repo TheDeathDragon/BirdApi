@@ -3,11 +3,13 @@ package la.shiro.birdapi.bll.controller
 import la.shiro.birdapi.bll.service.UserService
 import la.shiro.birdapi.model.common.DEFAULT_PAGE_INDEX
 import la.shiro.birdapi.model.common.DEFAULT_PAGE_SIZE
+import la.shiro.birdapi.model.common.DEFAULT_PAGE_SORT_RULE
 import la.shiro.birdapi.model.entity.User
 import la.shiro.birdapi.model.enums.ResponseCodeEnum
 import la.shiro.birdapi.model.input.UserInput
 import la.shiro.birdapi.util.ApiResponse
 import la.shiro.birdapi.util.ResponseWrapper
+import org.babyfish.jimmer.spring.model.SortUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
@@ -26,9 +28,18 @@ class UserController(
     @GetMapping
     fun getUsers(
         @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<User>> {
-        return ResponseWrapper.success(userService.getUsers(PageRequest.of(pageIndex, pageSize)))
+        return ResponseWrapper.success(
+            userService.getUsers(
+                PageRequest.of(
+                    pageIndex,
+                    pageSize,
+                    SortUtils.toSort(sortCode)
+                )
+            )
+        )
     }
 
     @GetMapping("/{id}")
@@ -42,17 +53,17 @@ class UserController(
     }
 
     @GetMapping("/username/{username}")
-    fun getUserByUsername(@PathVariable username: String?): ApiResponse<User> {
+    fun getUserByUsername(@PathVariable username: String): ApiResponse<User> {
         return ResponseWrapper.success(userService.getUserByUsername(username))
     }
 
     @GetMapping("/email/{email}")
-    fun getUserByEmail(@PathVariable email: String?): ApiResponse<User> {
+    fun getUserByEmail(@PathVariable email: String): ApiResponse<User> {
         return ResponseWrapper.success(userService.getUserByEmail(email))
     }
 
     @GetMapping("/phone/{phone}")
-    fun getUserByPhone(@PathVariable phone: String?): ApiResponse<User> {
+    fun getUserByPhone(@PathVariable phone: String): ApiResponse<User> {
         return ResponseWrapper.success(userService.getUserByPhone(phone))
     }
 
@@ -68,7 +79,7 @@ class UserController(
 
     @PutMapping("/id/{id}")
     fun updateUserById(
-        @PathVariable id: Long?,
+        @PathVariable id: Long,
         @RequestBody userInput: UserInput
     ): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.updateUserById(id, userInput))
@@ -76,78 +87,78 @@ class UserController(
 
     @PutMapping("/id/{id}/username/{username}")
     fun updateByIdAndUsername(
-        @PathVariable id: Long?,
-        @PathVariable username: String?
+        @PathVariable id: Long,
+        @PathVariable username: String
     ): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.updateUsernameById(id, username))
     }
 
     @PutMapping("/id/{id}/password/{password}")
     fun updateByIdAndPassword(
-        @PathVariable id: Long?,
-        @PathVariable password: String?
+        @PathVariable id: Long,
+        @PathVariable password: String
     ): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.updatePasswordById(id, password))
     }
 
     @PutMapping("/id/{id}/email/{email}")
     fun updateByIdAndEmail(
-        @PathVariable id: Long?,
-        @PathVariable email: String?
+        @PathVariable id: Long,
+        @PathVariable email: String
     ): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.updateEmailById(id, email))
     }
 
     @PutMapping("/id/{id}/phone/{phone}")
     fun updateByIdAndPhone(
-        @PathVariable id: Long?,
-        @PathVariable phone: String?
+        @PathVariable id: Long,
+        @PathVariable phone: String
     ): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.updatePhoneById(id, phone))
     }
 
     @PutMapping("/id/{id}/sex/{sex}")
     fun updateByIdAndSex(
-        @PathVariable id: Long?,
-        @PathVariable sex: String?
+        @PathVariable id: Long,
+        @PathVariable sex: String
     ): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.updateSexById(id, sex))
     }
 
     @PutMapping("/id/{id}/wechat/{wechat}")
     fun updateByIdAndWechat(
-        @PathVariable id: Long?,
-        @PathVariable wechat: String?
+        @PathVariable id: Long,
+        @PathVariable wechat: String
     ): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.updateWechatById(id, wechat))
     }
 
     @PutMapping("/id/{id}/qq/{qq}")
     fun updateByIdAndQq(
-        @PathVariable id: Long?,
-        @PathVariable qq: String?
+        @PathVariable id: Long,
+        @PathVariable qq: String
     ): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.updateQqById(id, qq))
     }
 
     @PutMapping("/id/{id}/avatar/{avatar}")
     fun updateByIdAndAvatar(
-        @PathVariable id: Long?,
-        @PathVariable avatar: String?
+        @PathVariable id: Long,
+        @PathVariable avatar: String
     ): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.updateAvatarById(id, avatar))
     }
 
     @PutMapping("/id/{id}/birthday/{birthday}")
     fun updateByIdAndBirthday(
-        @PathVariable id: Long?,
-        @PathVariable birthday: LocalDate?
+        @PathVariable id: Long,
+        @PathVariable birthday: LocalDate
     ): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.updateBirthdayById(id, birthday))
     }
 
     @DeleteMapping("/id/{id}")
-    fun deleteUserById(@PathVariable id: Long?): ApiResponse<Boolean> {
+    fun deleteUserById(@PathVariable id: Long): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.deleteUserById(id))
     }
 

@@ -12,13 +12,13 @@ import org.springframework.data.domain.Pageable
  */
 interface ArticleService {
 
-    fun getArticleById(id: Long?): Article?
+    fun getArticleById(id: Long): Article?
 
     fun getArticleByIds(ids: List<Long>?): List<Article>?
 
     fun getArticleByTitle(title: String?, pageable: Pageable): Page<Article>?
 
-    fun getArticlesByCategoryId(categoryId: Long?, pageable: Pageable): Page<Article>?
+    fun getArticlesByCategoryId(categoryId: Long, pageable: Pageable): Page<Article>?
 
     fun getArticles(pageable: Pageable): Page<Article>
 
@@ -26,11 +26,11 @@ interface ArticleService {
 
     fun addArticle(articleInput: ArticleInput?): Article?
 
-    fun updateArticleById(id: Long?, articleInput: ArticleInput?): Article?
+    fun updateArticleById(id: Long, articleInput: ArticleInput?): Article?
 
-    fun updateArticleLike(id: Long?): Boolean
+    fun updateArticleLike(id: Long): Boolean
 
-    fun deleteArticleById(id: Long?): Boolean
+    fun deleteArticleById(id: Long): Boolean
 
     fun deleteArticleByIds(ids: List<Long>?): Int
 

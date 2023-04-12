@@ -3,10 +3,12 @@ package la.shiro.birdapi.bll.controller
 import la.shiro.birdapi.bll.service.ArticleCollectionService
 import la.shiro.birdapi.model.common.DEFAULT_PAGE_INDEX
 import la.shiro.birdapi.model.common.DEFAULT_PAGE_SIZE
+import la.shiro.birdapi.model.common.DEFAULT_PAGE_SORT_RULE
 import la.shiro.birdapi.model.entity.ArticleCollection
 import la.shiro.birdapi.model.input.ArticleCollectionInput
 import la.shiro.birdapi.util.ApiResponse
 import la.shiro.birdapi.util.ResponseWrapper
+import org.babyfish.jimmer.spring.model.SortUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
@@ -25,13 +27,15 @@ class ArticleCollectionController(
     @GetMapping
     fun getArticleCollections(
         @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String,
     ): ApiResponse<Page<ArticleCollection>> {
         return ResponseWrapper.success(
             articleCollectionService.getArticleCollections(
                 PageRequest.of(
                     pageIndex,
-                    pageSize
+                    pageSize,
+                    SortUtils.toSort(sortCode)
                 )
             )
         )
@@ -48,12 +52,12 @@ class ArticleCollectionController(
     }
 
     @GetMapping("/user/{userId}")
-    fun getArticleCollectionByUserId(@PathVariable userId: Long?): ApiResponse<List<ArticleCollection>> {
+    fun getArticleCollectionByUserId(@PathVariable userId: Long): ApiResponse<List<ArticleCollection>> {
         return ResponseWrapper.success(articleCollectionService.getArticleCollectionByUserId(userId))
     }
 
     @GetMapping("/article/{articleId}")
-    fun getArticleCollectionByArticleId(@PathVariable articleId: Long?): ApiResponse<List<ArticleCollection>> {
+    fun getArticleCollectionByArticleId(@PathVariable articleId: Long): ApiResponse<List<ArticleCollection>> {
         return ResponseWrapper.success(articleCollectionService.getArticleCollectionByArticleId(articleId))
     }
 

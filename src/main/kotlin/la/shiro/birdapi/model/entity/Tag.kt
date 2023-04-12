@@ -24,5 +24,6 @@ interface Tag : BaseEntity {
 
     /**
      *  标签名称 */
+    @Key
     val name: String
 }

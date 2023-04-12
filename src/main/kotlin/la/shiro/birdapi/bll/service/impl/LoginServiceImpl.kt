@@ -3,6 +3,7 @@ package la.shiro.birdapi.bll.service.impl
 import cn.dev33.satoken.stp.StpUtil
 import la.shiro.birdapi.bll.service.LoginService
 import la.shiro.birdapi.bll.service.UserService
+import la.shiro.birdapi.model.entity.User
 import la.shiro.birdapi.model.enums.ResponseCodeEnum
 import la.shiro.birdapi.util.ApiResponse
 import la.shiro.birdapi.util.PasswordUtil
@@ -26,8 +27,14 @@ class LoginServiceImpl(
         if (password == null) {
             return ResponseWrapper.error("Password must be provided", ResponseCodeEnum.BAD_REQUEST.code)
         }
-        val user = userService.getUserByEmail(email) ?: userService.getUserByPhone(phone)
-        ?: return ResponseWrapper.error("User not found", ResponseCodeEnum.NOT_FOUND.code)
+        var user: User? = null
+        if (email != null) {
+            user = userService.getUserByEmail(email)
+        }
+        if (phone != null) {
+            user = userService.getUserByPhone(phone)
+        }
+        user ?: return ResponseWrapper.error("User not found", ResponseCodeEnum.NOT_FOUND.code)
 
         return if (PasswordUtil.match(password, user.password)) {
             StpUtil.login(user.id)

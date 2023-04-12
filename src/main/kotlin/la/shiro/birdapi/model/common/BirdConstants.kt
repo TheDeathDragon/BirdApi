@@ -62,3 +62,6 @@ const val COMMENT_STATUS_PENDING_REVIEW = 0
 
 // 评论状态-发布
 const val COMMENT_STATUS_PUBLISH = 1
+
+// 默认分页排序规则
+const val DEFAULT_PAGE_SORT_RULE = "id desc"

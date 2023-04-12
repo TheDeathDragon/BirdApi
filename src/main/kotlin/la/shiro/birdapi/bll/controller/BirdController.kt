@@ -3,10 +3,12 @@ package la.shiro.birdapi.bll.controller
 import la.shiro.birdapi.bll.service.BirdService
 import la.shiro.birdapi.model.common.DEFAULT_PAGE_INDEX
 import la.shiro.birdapi.model.common.DEFAULT_PAGE_SIZE
+import la.shiro.birdapi.model.common.DEFAULT_PAGE_SORT_RULE
 import la.shiro.birdapi.model.entity.Bird
 import la.shiro.birdapi.model.input.BirdInput
 import la.shiro.birdapi.util.ApiResponse
 import la.shiro.birdapi.util.ResponseWrapper
+import org.babyfish.jimmer.spring.model.SortUtils
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -41,14 +43,17 @@ class BirdController(
 
     @GetMapping("/species/{species}")
     fun getBirdBySpecies(
-        @PathVariable species: Long?,
+        @PathVariable species: Long,
         @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Bird>> {
         return ResponseWrapper.success(
             birdService.getBirdBySpecies(
                 species,
-                PageRequest.of(pageIndex, pageSize)
+                PageRequest.of(
+                    pageIndex, pageSize, SortUtils.toSort(sortCode)
+                )
             )
         )
     }
@@ -56,32 +61,35 @@ class BirdController(
     @GetMapping
     fun getBirds(
         @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Bird>> {
         return ResponseWrapper.success(
-            birdService.getBirds(PageRequest.of(pageIndex, pageSize))
+            birdService.getBirds(PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
         )
     }
 
     @GetMapping("/name")
     fun getBirdByName(
-        @RequestParam name: String?,
+        @RequestParam name: String,
         @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Bird>> {
         return ResponseWrapper.success(
-            birdService.getBirdsByName(name, PageRequest.of(pageIndex, pageSize))
+            birdService.getBirdsByName(name, PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
         )
     }
 
     @GetMapping("/enName")
     fun getBirdByEnName(
-        @RequestParam enName: String?,
+        @RequestParam enName: String,
         @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Bird>> {
         return ResponseWrapper.success(
-            birdService.getBirdsByEnName(enName, PageRequest.of(pageIndex, pageSize))
+            birdService.getBirdsByEnName(enName, PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
         )
     }
 
@@ -104,7 +112,7 @@ class BirdController(
     }
 
     @PutMapping("/like/{id}")
-    fun updateBirdLikeById(@PathVariable id: Long?): ApiResponse<Boolean> {
+    fun updateBirdLikeById(@PathVariable id: Long): ApiResponse<Boolean> {
         return ResponseWrapper.success(birdService.updateBirdLike(id))
     }
 

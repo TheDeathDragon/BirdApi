@@ -12,11 +12,11 @@ import org.springframework.data.domain.Pageable
  */
 interface BirdService {
 
-    fun getBirdById(id: Long?): Bird?
+    fun getBirdById(id: Long): Bird?
 
     fun getBirdByIds(ids: List<Long>?): List<Bird>?
 
-    fun getBirdBySpecies(species: Long?, pageable: Pageable): Page<Bird>?
+    fun getBirdBySpecies(species: Long, pageable: Pageable): Page<Bird>?
 
     fun getBirds(pageable: Pageable): Page<Bird>
 
@@ -28,11 +28,11 @@ interface BirdService {
 
     fun addBird(birdInput: BirdInput?): Bird?
 
-    fun updateBirdById(id: Long?, birdInput: BirdInput?): Bird?
+    fun updateBirdById(id: Long, birdInput: BirdInput?): Bird?
 
-    fun updateBirdLike(id: Long?): Boolean
+    fun updateBirdLike(id: Long): Boolean
 
-    fun deleteBirdById(id: Long?): Boolean
+    fun deleteBirdById(id: Long): Boolean
 
     fun deleteBirdByIds(ids: List<Long>?): Int
 

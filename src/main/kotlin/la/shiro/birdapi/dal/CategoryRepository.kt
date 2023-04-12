@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface CategoryRepository : KRepository<Category, Long> {
-
+    fun getCategoriesByPid(pid: Long): List<Category>
 }
 

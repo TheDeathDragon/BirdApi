@@ -7,7 +7,9 @@ import la.shiro.birdapi.util.ResponseWrapper
 import org.springframework.data.domain.Page
 import la.shiro.birdapi.model.common.DEFAULT_PAGE_SIZE
 import la.shiro.birdapi.model.common.DEFAULT_PAGE_INDEX
+import la.shiro.birdapi.model.common.DEFAULT_PAGE_SORT_RULE
 import la.shiro.birdapi.model.input.ArticleInput
+import org.babyfish.jimmer.spring.model.SortUtils
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
 
@@ -33,35 +35,38 @@ class ArticleController(
 
     @GetMapping("/title")
     fun getArticleByTitle(
-        @RequestParam title: String?,
+        @RequestParam title: String,
         @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Article>> {
         return ResponseWrapper.success(
-            articleService.getArticleByTitle(title, PageRequest.of(pageIndex, pageSize))
+            articleService.getArticleByTitle(title, PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
         )
     }
 
     @GetMapping
     fun getArticles(
         @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Article>> {
         return ResponseWrapper.success(
-            articleService.getArticles(PageRequest.of(pageIndex, pageSize))
+            articleService.getArticles(PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
         )
     }
 
     @GetMapping("/category/{categoryId}")
     fun getArticleByCategoryId(
-        @PathVariable categoryId: Long?,
+        @PathVariable categoryId: Long,
         @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Article>> {
         return ResponseWrapper.success(
             articleService.getArticlesByCategoryId(
                 categoryId,
-                PageRequest.of(pageIndex, pageSize)
+                PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode))
             )
         )
     }
@@ -72,18 +77,20 @@ class ArticleController(
     }
 
     @GetMapping("/like/{id}")
-    fun updateArticleLike(@PathVariable id: Long?): ApiResponse<Boolean> {
+    fun updateArticleLike(@PathVariable id: Long): ApiResponse<Boolean> {
         return ResponseWrapper.success(articleService.updateArticleLike(id))
     }
 
     @PostMapping("/add")
-    fun addArticle(@RequestBody articleInput: ArticleInput?): ApiResponse<Article> {
+    fun addArticle(@RequestBody articleInput: ArticleInput): ApiResponse<Article> {
         return ResponseWrapper.success(articleService.addArticle(articleInput))
     }
 
     @PutMapping("/{id}")
-    fun updateArticleById(@PathVariable id: Long,
-                          @RequestBody articleInput: ArticleInput?): ApiResponse<Article> {
+    fun updateArticleById(
+        @PathVariable id: Long,
+        @RequestBody articleInput: ArticleInput
+    ): ApiResponse<Article> {
         return ResponseWrapper.success(articleService.updateArticleById(id, articleInput))
     }
 

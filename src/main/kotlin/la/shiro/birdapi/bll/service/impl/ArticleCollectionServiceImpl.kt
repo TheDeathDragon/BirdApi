@@ -31,12 +31,12 @@ class ArticleCollectionServiceImpl(
         return ids?.let { articleCollectionRepository.findByIds(it) }
     }
 
-    override fun getArticleCollectionByUserId(userId: Long?): List<ArticleCollection>? {
-        return userId?.let { articleCollectionRepository.findByUserId(it) }
+    override fun getArticleCollectionByUserId(userId: Long): List<ArticleCollection>? {
+        return articleCollectionRepository.findByUserId(userId)
     }
 
-    override fun getArticleCollectionByArticleId(articleId: Long?): List<ArticleCollection>? {
-        return articleId?.let { articleCollectionRepository.findByArticleId(it) }
+    override fun getArticleCollectionByArticleId(articleId: Long): List<ArticleCollection>? {
+        return articleCollectionRepository.findByArticleId(articleId)
     }
 
     override fun addArticleCollection(articleCollectionInput: ArticleCollectionInput?): ArticleCollection? {
@@ -44,23 +44,20 @@ class ArticleCollectionServiceImpl(
     }
 
     override fun updateArticleCollectionById(
-        id: Long?,
+        id: Long,
         articleCollectionInput: ArticleCollectionInput?
     ): ArticleCollection? {
-        return id?.let {
-            articleCollectionInput?.let {
-                articleCollectionInput.id = id
-                articleCollectionRepository.update(it)
-            }
+        return articleCollectionInput?.let {
+            articleCollectionInput.id = id
+            articleCollectionRepository.update(it)
         }
     }
 
-    override fun deleteArticleCollectionById(id: Long?): Boolean {
-        return id?.let {
-            if (!articleCollectionRepository.existsById(it)) return false
-            articleCollectionRepository.deleteById(it)
+    override fun deleteArticleCollectionById(id: Long): Boolean {
+        return if (articleCollectionRepository.existsById(id)) {
+            articleCollectionRepository.deleteById(id)
             true
-        } ?: false
+        } else false
     }
 
     override fun deleteArticleCollectionByIds(ids: List<Long>?): Int {

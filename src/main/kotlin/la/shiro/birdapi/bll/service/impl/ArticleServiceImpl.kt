@@ -21,10 +21,8 @@ class ArticleServiceImpl(
     private val articleRepository: ArticleRepository,
     private val articleImageRepository: ArticleImageRepository
 ) : ArticleService {
-    override fun getArticleById(id: Long?): Article? {
-        val article = id?.let {
-            articleRepository.findById(it).orElse(null)
-        }
+    override fun getArticleById(id: Long): Article? {
+        val article = articleRepository.findById(id).orElse(null)
         article?.let {
             articleRepository.updateViewCountById(it.id)
         }
@@ -43,8 +41,8 @@ class ArticleServiceImpl(
         return articleRepository.findAll(pageable)
     }
 
-    override fun getArticlesByCategoryId(categoryId: Long?, pageable: Pageable): Page<Article>? {
-        return categoryId?.let { articleRepository.findByCategoryIdOrderByIdDesc(it, pageable) }
+    override fun getArticlesByCategoryId(categoryId: Long, pageable: Pageable): Page<Article>? {
+        return articleRepository.findByCategoryIdOrderByIdDesc(categoryId, pageable)
     }
 
     override fun getHotArticles(): List<Article>? {
@@ -57,29 +55,23 @@ class ArticleServiceImpl(
         }
     }
 
-    override fun updateArticleById(id: Long?, articleInput: ArticleInput?): Article? {
-        return id?.let {
-            articleInput?.let {
-                articleInput.id = id
-                articleRepository.update(articleInput)
-            }
+    override fun updateArticleById(id: Long, articleInput: ArticleInput?): Article? {
+        return articleInput?.let {
+            articleInput.id = id
+            articleRepository.update(articleInput)
         }
     }
 
-    override fun updateArticleLike(id: Long?): Boolean {
-        id?.let {
-            return articleRepository.updateLikeCountById(it)
-        } ?: return false
+    override fun updateArticleLike(id: Long): Boolean {
+        return articleRepository.updateLikeCountById(id)
     }
 
-    override fun deleteArticleById(id: Long?): Boolean {
-        return id?.let {
-            if (articleRepository.existsById(it)) {
-                articleRepository.deleteById(it)
-                articleImageRepository.deleteArticleImageByArticleId(it)
-                true
-            } else false
-        } ?: false
+    override fun deleteArticleById(id: Long): Boolean {
+        return if (articleRepository.existsById(id)) {
+            articleRepository.deleteById(id)
+            articleImageRepository.deleteArticleImageByArticleId(id)
+            return true
+        } else false
     }
 
     override fun deleteArticleByIds(ids: List<Long>?): Int {

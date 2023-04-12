@@ -21,11 +21,8 @@ class BirdServiceImpl(
     private val birdRepository: BirdRepository,
     private val birdImageRepository: BirdImageRepository
 ) : BirdService {
-    override fun getBirdById(id: Long?): Bird? {
-        if (id == null) {
-            return null
-        }
-        val bird = id.let { birdRepository.findById(it).orElse(null) }
+    override fun getBirdById(id: Long): Bird? {
+        val bird = birdRepository.findById(id).orElse(null)
         bird?.let {
             birdRepository.updateViewCountById(it.id)
         }
@@ -36,8 +33,8 @@ class BirdServiceImpl(
         return ids?.let { birdRepository.findByIds(it) }
     }
 
-    override fun getBirdBySpecies(species: Long?, pageable: Pageable): Page<Bird>? {
-        return species?.let { birdRepository.findBySpeciesOrderByIdDesc(it, pageable) }
+    override fun getBirdBySpecies(species: Long, pageable: Pageable): Page<Bird>? {
+        return birdRepository.findBySpeciesOrderByIdDesc(species, pageable)
     }
 
     override fun getBirds(pageable: Pageable): Page<Bird> {
@@ -60,29 +57,23 @@ class BirdServiceImpl(
         return birdInput?.let { birdRepository.save(it.toEntity()) }
     }
 
-    override fun updateBirdById(id: Long?, birdInput: BirdInput?): Bird? {
-        return id.let {
-            birdInput?.let {
-                birdInput.id = id
-                birdRepository.update(birdInput)
-            }
+    override fun updateBirdById(id: Long, birdInput: BirdInput?): Bird? {
+        return birdInput?.let {
+            birdInput.id = id
+            birdRepository.update(birdInput)
         }
     }
 
-    override fun updateBirdLike(id: Long?): Boolean {
-        id?.let {
-            return birdRepository.updateLikeCountById(it)
-        } ?: return false
+    override fun updateBirdLike(id: Long): Boolean {
+        return birdRepository.updateLikeCountById(id)
     }
 
-    override fun deleteBirdById(id: Long?): Boolean {
-        return id?.let {
-            if (birdRepository.existsById(it)) {
-                birdRepository.deleteById(it)
-                birdImageRepository.deleteBirdImageByBirdId(it)
-                true
-            } else false
-        } ?: false
+    override fun deleteBirdById(id: Long): Boolean {
+        return if (birdRepository.existsById(id)) {
+            birdRepository.deleteById(id)
+            birdImageRepository.deleteBirdImageByBirdId(id)
+            return true
+        } else false
     }
 
     override fun deleteBirdByIds(ids: List<Long>?): Int {

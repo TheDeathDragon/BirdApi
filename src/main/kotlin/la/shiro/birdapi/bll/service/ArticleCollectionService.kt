@@ -14,10 +14,10 @@ interface ArticleCollectionService {
     fun getArticleCollections(pageable: Pageable): Page<ArticleCollection>?
     fun getArticleCollectionById(id: Long?): ArticleCollection?
     fun getArticleCollectionByIds(ids: List<Long>?): List<ArticleCollection>?
-    fun getArticleCollectionByUserId(userId: Long?): List<ArticleCollection>?
-    fun getArticleCollectionByArticleId(articleId: Long?): List<ArticleCollection>?
+    fun getArticleCollectionByUserId(userId: Long): List<ArticleCollection>?
+    fun getArticleCollectionByArticleId(articleId: Long): List<ArticleCollection>?
     fun addArticleCollection(articleCollectionInput: ArticleCollectionInput?): ArticleCollection?
-    fun updateArticleCollectionById(id: Long?, articleCollectionInput: ArticleCollectionInput?): ArticleCollection?
-    fun deleteArticleCollectionById(id: Long?): Boolean
+    fun updateArticleCollectionById(id: Long, articleCollectionInput: ArticleCollectionInput?): ArticleCollection?
+    fun deleteArticleCollectionById(id: Long): Boolean
     fun deleteArticleCollectionByIds(ids: List<Long>?): Int
 }
