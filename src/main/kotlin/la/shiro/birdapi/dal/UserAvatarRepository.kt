@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface UserAvatarRepository : KRepository<UserAvatar, Long> {
-
+    fun findByUserId(userId: Long): UserAvatar?
 }
 

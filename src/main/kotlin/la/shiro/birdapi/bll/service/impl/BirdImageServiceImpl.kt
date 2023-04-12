@@ -45,20 +45,36 @@ class BirdImageServiceImpl(
         }
         val birdImageInput = BirdImageInput(
             id = null,
+            birdId = birdId,
             title = title,
             url = url,
-            path = path,
-            birdId = birdId,
+            path = path
         )
         return birdImageRepository.insert(birdImageInput)
     }
 
-    override fun updateBirdImage(birdImageInput: BirdImageInput?): BirdImage? {
-        return birdImageInput?.let {
-            it.id?.let {
-                birdImageRepository.update(birdImageInput)
+    override fun updateBirdImage(birdImageInput: BirdImageInput, file: MultipartFile): BirdImage? {
+        val birdImage = birdImageRepository.findById(birdImageInput.id!!).orElse(null) ?: return null
+        FileUtils.deleteFile(birdImage.path)
+        val path = FileUtils.uploadFile(file, DEFAULT_BIRD_IMG_UPLOAD_PATH)
+        val url = ImageUtil.getImgUrl(path)
+        var title = birdImageInput.title
+        if (birdImageInput.title == null) {
+            file.originalFilename?.let {
+                title = it.substring(
+                    0, it.lastIndexOf(".")
+                )
             }
+            title = (System.currentTimeMillis().toString() + "_" + title).replace(" ", "_")
         }
+        val newBirdImageInput = BirdImageInput(
+            id = birdImageInput.id,
+            birdId = birdImageInput.birdId,
+            title = title,
+            url = url,
+            path = path
+        )
+        return birdImageRepository.update(newBirdImageInput)
     }
 
     override fun deleteBirdImage(id: Long): Boolean {

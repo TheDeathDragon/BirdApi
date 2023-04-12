@@ -23,6 +23,11 @@ interface ArticleImage : BaseEntity {
     val id: Long
 
     /**
+     *  文章图片的关联文章ID */
+    @Column(name = "article_id")
+    val articleId: Long?
+
+    /**
      *  文章图片标题 */
     val title: String
 
@@ -34,8 +39,4 @@ interface ArticleImage : BaseEntity {
      *  文章图片路径 */
     val path: String
 
-    /**
-     *  文章图片的关联文章ID */
-    @Column(name = "article_id")
-    val articleId: Long?
 }

@@ -29,12 +29,13 @@ object ImageUtil {
     fun convertToJpg(
         destination: Path,
         maxResolution: Int = DEFAULT_ARTICLE_IMG_UPLOAD_MAX_RESOLUTION,
-        compressRatio: Float = DEFAULT_IMG_COMPRESS_RATIO
+        compressRatio: Float = DEFAULT_IMG_COMPRESS_RATIO,
+        isSquare: Boolean = false
     ) {
         Thumbnails.of(destination.toFile())
 //            .scale(0.8)
             .size(maxResolution, maxResolution)
-            .keepAspectRatio(true)
+            .keepAspectRatio(!isSquare)
             .outputFormat("jpg")
             .outputQuality(compressRatio)
             .toFile(destination.toFile())

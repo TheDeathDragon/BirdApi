@@ -2,7 +2,6 @@ package la.shiro.birdapi.bll.service.impl
 
 import la.shiro.birdapi.bll.service.ArticleImageService
 import la.shiro.birdapi.dal.ArticleImageRepository
-import la.shiro.birdapi.dal.ArticleRepository
 import la.shiro.birdapi.model.common.DEFAULT_ARTICLE_IMG_UPLOAD_PATH
 import la.shiro.birdapi.model.entity.ArticleImage
 import la.shiro.birdapi.model.input.ArticleImageInput
@@ -46,20 +45,36 @@ class ArticleImageServiceImpl(
         }
         val articleInput = ArticleImageInput(
             id = null,
+            articleId = articleId,
             title = title,
             url = url,
-            path = path,
-            articleId = articleId,
+            path = path
         )
         return articleImageRepository.insert(articleInput)
     }
 
-    override fun updateArticleImage(articleImageInput: ArticleImageInput?): ArticleImage? {
-        return articleImageInput?.let {
-            it.id?.let {
-                articleImageRepository.update(articleImageInput)
+    override fun updateArticleImage(articleImageInput: ArticleImageInput, file: MultipartFile): ArticleImage? {
+        val articleImage = articleImageRepository.findById(articleImageInput.id!!).orElse(null) ?: return null
+        FileUtils.deleteFile(articleImage.path)
+        val path = FileUtils.uploadFile(file, DEFAULT_ARTICLE_IMG_UPLOAD_PATH)
+        val url = ImageUtil.getImgUrl(path)
+        var title = articleImageInput.title
+        if (articleImageInput.title == null) {
+            file.originalFilename?.let {
+                title = it.substring(
+                    0, it.lastIndexOf(".")
+                )
             }
+            title = (System.currentTimeMillis().toString() + "_" + title).replace(" ", "_")
         }
+        val newArticleImageInput = ArticleImageInput(
+            id = articleImageInput.id,
+            articleId = articleImageInput.articleId,
+            title = title,
+            url = url,
+            path = path
+        )
+        return articleImageRepository.update(newArticleImageInput)
     }
 
     override fun deleteArticleImage(id: Long): Boolean {

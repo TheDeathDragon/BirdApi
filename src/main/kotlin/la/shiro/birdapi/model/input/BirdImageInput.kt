@@ -16,11 +16,12 @@ import org.mapstruct.factory.Mappers
 data class BirdImageInput(
     @Schema(hidden = true)
     var id: Long?,
+    var birdId: Long?,
     var title: String?,
     @Schema(hidden = true)
     var url: String?,
-    var path: String?,
-    var birdId: Long?
+    @Schema(hidden = true)
+    var path: String?
 ) : Input<BirdImage> {
     override fun toEntity(): BirdImage = CONVERTER.toBirdImage(this)
 

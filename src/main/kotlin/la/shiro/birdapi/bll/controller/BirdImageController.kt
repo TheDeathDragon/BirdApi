@@ -63,11 +63,28 @@ class BirdImageController(
         return ResponseWrapper.success(birdImageService.addBirdImage(title, birdId, file))
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(
+        value = ["/{id}"],
+        consumes = ["multipart/form-data"],
+        produces = ["application/json"]
+    )
     fun updateBirdImage(
-        @RequestBody birdImageInput: BirdImageInput
+        @PathVariable id: Long,
+        @RequestParam birdId: Long?,
+        @RequestParam title: String?,
+        @RequestPart(value = "file") file: MultipartFile
     ): ApiResponse<BirdImage> {
-        return ResponseWrapper.success(birdImageService.updateBirdImage(birdImageInput))
+        if (file.isEmpty) {
+            return ResponseWrapper.error("File is empty")
+        }
+        val birdImageInput = BirdImageInput(
+            id = id,
+            birdId = birdId,
+            title = title,
+            path = null,
+            url = null
+        )
+        return ResponseWrapper.success(birdImageService.updateBirdImage(birdImageInput, file))
     }
 
     @DeleteMapping("/{id}")
@@ -81,7 +98,7 @@ class BirdImageController(
     }
 
     @DeleteMapping("/ids")
-    fun deleteBirdImageByIds(@RequestBody ids: List<Long>): ApiResponse<Int> {
+    fun deleteBirdImageByIds(@RequestParam ids: List<Long>): ApiResponse<Int> {
         return ResponseWrapper.success(birdImageService.deleteBirdImageByIds(ids))
     }
 }

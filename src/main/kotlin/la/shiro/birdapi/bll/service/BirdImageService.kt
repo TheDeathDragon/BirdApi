@@ -19,7 +19,7 @@ interface BirdImageService {
 
     fun addBirdImage(imageTitle: String?, birdId: Long?, file: MultipartFile): BirdImage?
 
-    fun updateBirdImage(birdImageInput: BirdImageInput?): BirdImage?
+    fun updateBirdImage(birdImageInput: BirdImageInput, file: MultipartFile): BirdImage?
 
     fun deleteBirdImage(id: Long): Boolean
 

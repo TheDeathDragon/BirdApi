@@ -23,6 +23,11 @@ interface BirdImage : BaseEntity {
     val id: Long
 
     /**
+     *  鸟类ID */
+    @Column(name = "bird_id")
+    val birdId : Long?
+
+    /**
      *  鸟类图片标题 */
     val title: String
 
@@ -34,8 +39,4 @@ interface BirdImage : BaseEntity {
      *  鸟类图片路径 */
     val path: String
 
-    /**
-     *  鸟类ID */
-    @Column(name = "bird_id")
-    val birdId : Long
 }

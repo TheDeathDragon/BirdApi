@@ -63,11 +63,28 @@ class ArticleImageController(
         return ResponseWrapper.success(articleImageService.addArticleImage(title, articleId, file))
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(
+        value = ["/{id}"],
+        consumes = ["multipart/form-data"],
+        produces = ["application/json"]
+    )
     fun updateArticleImage(
-        @RequestBody articleImageInput: ArticleImageInput
+        @PathVariable id: Long,
+        @RequestParam articleId: Long?,
+        @RequestParam title: String?,
+        @RequestPart(value = "file") file: MultipartFile
     ): ApiResponse<ArticleImage> {
-        return ResponseWrapper.success(articleImageService.updateArticleImage(articleImageInput))
+        if (file.isEmpty) {
+            return ResponseWrapper.error("File is empty")
+        }
+        val articleImageInput = ArticleImageInput(
+            id = id,
+            title = title,
+            articleId = articleId,
+            url = null,
+            path = null
+        )
+        return ResponseWrapper.success(articleImageService.updateArticleImage(articleImageInput, file))
     }
 
     @DeleteMapping("/{id}")
@@ -81,7 +98,7 @@ class ArticleImageController(
     }
 
     @DeleteMapping("/ids")
-    fun deleteArticleImageByIds(@RequestBody ids: List<Long>): ApiResponse<Int> {
+    fun deleteArticleImageByIds(@RequestParam ids: List<Long>): ApiResponse<Int> {
         return ResponseWrapper.success(articleImageService.deleteArticleImageByIds(ids))
     }
 }

@@ -66,7 +66,7 @@ class CategoryController(
     }
 
     @DeleteMapping("/ids")
-    fun deleteCategoriesByIds(@RequestBody ids: List<Long>?): ApiResponse<Int> {
+    fun deleteCategoriesByIds(@RequestParam ids: List<Long>?): ApiResponse<Int> {
         return ResponseWrapper.success(categoryService.deleteCategoryByIds(ids))
     }
 }

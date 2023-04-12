@@ -43,7 +43,7 @@ object FileUtils {
         when (uploadPath) {
             DEFAULT_ARTICLE_IMG_UPLOAD_PATH -> ImageUtil.convertToJpg(destination, DEFAULT_ARTICLE_IMG_UPLOAD_MAX_RESOLUTION)
             DEFAULT_BIRD_IMG_UPLOAD_PATH -> ImageUtil.convertToJpg(destination, DEFAULT_BIRD_IMG_UPLOAD_MAX_RESOLUTION)
-            DEFAULT_AVATAR_UPLOAD_PATH -> ImageUtil.convertToJpg(destination, DEFAULT_AVATAR_UPLOAD_MAX_RESOLUTION)
+            DEFAULT_AVATAR_UPLOAD_PATH -> ImageUtil.convertToJpg(destination, DEFAULT_AVATAR_UPLOAD_MAX_RESOLUTION, isSquare = true)
         }
         return uploadPath + filename
     }

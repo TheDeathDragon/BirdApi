@@ -25,9 +25,14 @@ interface UserAvatar : BaseEntity {
     /**
      *  用户头像关联用户ID */
     @Column(name = "user_id")
+    @Key
     val userId: Long
 
     /**
      *  用户头像URL */
-    val url: String?
+    val url: String
+
+    /**
+     *  用户头像路径 */
+    val path: String
 }

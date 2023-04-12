@@ -19,7 +19,7 @@ interface ArticleImageService {
 
     fun addArticleImage(imageTitle: String?, articleId: Long?, file: MultipartFile): ArticleImage?
 
-    fun updateArticleImage(articleImageInput: ArticleImageInput?): ArticleImage?
+    fun updateArticleImage(articleImageInput: ArticleImageInput, file: MultipartFile): ArticleImage?
 
     fun deleteArticleImage(id: Long): Boolean
 
