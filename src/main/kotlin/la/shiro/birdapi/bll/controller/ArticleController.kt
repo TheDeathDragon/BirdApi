@@ -49,7 +49,7 @@ class ArticleController(
     fun getArticles(
         @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
+        @RequestParam(defaultValue = "top desc, id desc") sortCode: String
     ): ApiResponse<Page<Article>> {
         return ResponseWrapper.success(
             articleService.getArticles(PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
