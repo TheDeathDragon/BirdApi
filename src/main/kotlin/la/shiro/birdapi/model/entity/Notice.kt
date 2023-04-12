@@ -24,6 +24,7 @@ interface Notice : BaseEntity {
 
     /**
      *  公告标题 */
+    @Key
     val title: String
 
     /**

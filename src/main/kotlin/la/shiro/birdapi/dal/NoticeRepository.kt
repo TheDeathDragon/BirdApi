@@ -15,5 +15,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface NoticeRepository : KRepository<Notice, Long> {
 
+    fun findTop1ByOrderByIdDesc(): Notice?
 }
-
