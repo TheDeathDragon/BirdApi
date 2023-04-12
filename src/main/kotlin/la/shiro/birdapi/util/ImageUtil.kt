@@ -23,6 +23,7 @@ object ImageUtil {
      * @param destination 目标文件
      * @param maxResolution 最大分辨率
      * @param compressRatio 压缩比例
+     * @param isSquare 是否为正方形
      * @throws IOException
      */
     @Throws(IOException::class)
@@ -44,7 +45,7 @@ object ImageUtil {
 
     fun getImgUrl(path: String): String? {
         return if (path.isNotEmpty()) {
-            "http://localhost:8080$path"
+            "http://localhost:3000$path"
         } else {
             null
         }
