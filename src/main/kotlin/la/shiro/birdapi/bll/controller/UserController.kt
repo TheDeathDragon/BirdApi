@@ -45,6 +45,27 @@ class UserController(
         )
     }
 
+    @PostMapping
+    fun getUsersCondition(
+        @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String,
+        @RequestBody userInput: UserInput?
+    ): ApiResponse<Page<User>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
+        return ResponseWrapper.success(
+            userService.getUsersCondition(
+                PageRequest.of(
+                    pageIndex - 1,
+                    pageSize,
+                    SortUtils.toSort(sortCode)
+                ),userInput
+            )
+        )
+    }
+
     @GetMapping("/{id}")
     fun getUserById(@PathVariable id: Long): ApiResponse<User> {
         return ResponseWrapper.success(userService.getUserById(id))

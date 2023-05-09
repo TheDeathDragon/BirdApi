@@ -23,6 +23,10 @@ class CommentServiceImpl(
         return commentRepository.findAll(pageable)
     }
 
+    override fun getCommentsCondition(pageable: Pageable, commentInput: CommentInput?): Page<Comment> {
+        return commentRepository.findCommentsCondition(pageable, commentInput)
+    }
+
     override fun getCommentById(id: Long): Comment? {
         return commentRepository.findById(id).orElse(null)
     }

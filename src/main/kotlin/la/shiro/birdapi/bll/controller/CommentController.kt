@@ -44,6 +44,27 @@ class CommentController(
         )
     }
 
+    @PostMapping
+    fun getCommentsCondition(
+        @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String,
+        @RequestBody commentInput: CommentInput?
+    ): ApiResponse<Page<Comment>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
+        return ResponseWrapper.success(
+            commentService.getCommentsCondition(
+                PageRequest.of(
+                    pageIndex - 1,
+                    pageSize,
+                    SortUtils.toSort(sortCode)
+                ), commentInput
+            )
+        )
+    }
+
     @GetMapping("/{id}")
     fun getCommentById(@PathVariable id: Long): ApiResponse<Comment> {
         return ResponseWrapper.success(commentService.getCommentById(id))

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -46,6 +47,28 @@ class NoticeController(
                     pageSize,
                     SortUtils.toSort(sortCode)
                 )
+            )
+        )
+    }
+
+    @PostMapping
+    fun getNoticesCondition(
+        @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String,
+        @RequestBody noticeInput: NoticeInput?
+    ): ApiResponse<Page<Notice>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
+        return ResponseWrapper.success(
+            noticeService.getNoticesCondition(
+                PageRequest.of(
+                    pageIndex - 1,
+                    pageSize,
+                    SortUtils.toSort(sortCode)
+                ),
+                noticeInput
             )
         )
     }

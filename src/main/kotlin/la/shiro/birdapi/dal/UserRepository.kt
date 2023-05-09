@@ -3,7 +3,10 @@ package la.shiro.birdapi.dal
 import la.shiro.birdapi.model.entity.*
 import la.shiro.birdapi.model.input.UserInput
 import org.babyfish.jimmer.spring.repository.KRepository
+import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 import java.time.LocalDate
 
@@ -93,6 +96,40 @@ interface UserRepository : KRepository<User, Long> {
             where(table.id eq id)
         }.execute()
         return count == 1
+    }
+
+    fun findUsersCondition(pageable: Pageable, userInput: UserInput?): Page<User>? {
+        if (userInput == null) {
+            return findAll(pageable)
+        }
+
+        val username = userInput.username
+        val email = userInput.email
+        val phone = userInput.phone
+        val wechat = userInput.wechat
+        val qq = userInput.qq
+
+        return pager(pageable).execute(
+            sql.createQuery(User::class) {
+                username?.takeIf { it.isNotBlank() }?.let {
+                    where(table.username eq username)
+                }
+                email?.takeIf { it.isNotBlank() }?.let {
+                    where(table.email eq email)
+                }
+                phone?.takeIf { it.isNotBlank() }?.let {
+                    where(table.phone eq phone)
+                }
+                wechat?.takeIf { it.isNotBlank() }?.let {
+                    where(table.wechat eq wechat)
+                }
+                qq?.takeIf { it.isNotBlank() }?.let {
+                    where(table.qq eq qq)
+                }
+                orderBy(table.id.desc())
+                select(table)
+            }
+        )
     }
 }
 

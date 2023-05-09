@@ -24,6 +24,8 @@ interface UserService {
 
     fun getUsers(pageable: Pageable): Page<User>?
 
+    fun getUsersCondition(pageable: Pageable, userInput: UserInput?): Page<User>?
+
     fun addUser(userInput: UserInput?): Any?
 
     fun updateUserById(id: Long, userInput: UserInput?): Boolean

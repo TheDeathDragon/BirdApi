@@ -45,6 +45,10 @@ class UserServiceImpl(
         return userRepository.findAll(pageable)
     }
 
+    override fun getUsersCondition(pageable: Pageable,userInput: UserInput?): Page<User>? {
+        return userRepository.findUsersCondition(pageable,userInput)
+    }
+
     override fun addUser(userInput: UserInput?): Any? {
         userInput?.let {
             it.username?.let { it1 ->

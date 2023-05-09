@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable
  */
 interface NoticeService {
     fun getNotices(pageable: Pageable): Page<Notice>
+    fun getNoticesCondition(pageable: Pageable, noticeInput: NoticeInput?): Page<Notice>
     fun getNoticeById(id: Long): Notice?
 
     fun getNoticeLatest(): Notice?

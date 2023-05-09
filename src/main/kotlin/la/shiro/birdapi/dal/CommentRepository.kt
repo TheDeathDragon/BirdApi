@@ -1,7 +1,9 @@
 package la.shiro.birdapi.dal
 
 import la.shiro.birdapi.model.entity.*
+import la.shiro.birdapi.model.input.CommentInput
 import org.babyfish.jimmer.spring.repository.KRepository
+import org.babyfish.jimmer.sql.kt.ast.expression.desc
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.plus
 import org.springframework.data.domain.Page
@@ -62,6 +64,36 @@ interface CommentRepository : KRepository<Comment, Long> {
             where(table.pid eq pid)
         }.execute()
         return originCount - this.count()
+    }
+
+    fun findCommentsCondition(pageable: Pageable, commentInput: CommentInput?): Page<Comment> {
+        if (commentInput == null) {
+            return findAll(pageable)
+        }
+
+        val articleId = commentInput.articleId
+        val userId = commentInput.userId
+        val pid = commentInput.pid
+        val published = commentInput.published
+
+        return pager(pageable).execute(
+            sql.createQuery(Comment::class) {
+                articleId?.takeIf { it > 0 }?.let {
+                    where(table.articleId eq articleId)
+                }
+                userId?.takeIf { it > 0 }?.let {
+                    where(table.userId eq userId)
+                }
+                pid?.takeIf { it > 0 }?.let {
+                    where(table.pid eq pid)
+                }
+                published?.takeIf { it.isNotBlank() }?.let {
+                    where(table.published eq published)
+                }
+                orderBy(table.id.desc())
+                select(table)
+            }
+        )
     }
 
 }

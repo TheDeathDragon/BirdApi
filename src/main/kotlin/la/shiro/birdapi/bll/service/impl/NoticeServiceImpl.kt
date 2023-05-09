@@ -23,6 +23,10 @@ class NoticeServiceImpl(
         return noticeRepository.findAll(pageable)
     }
 
+    override fun getNoticesCondition(pageable: Pageable, noticeInput: NoticeInput?): Page<Notice> {
+        return noticeRepository.findNoticesCondition(pageable, noticeInput)
+    }
+
     override fun getNoticeById(id: Long): Notice {
         return noticeRepository.findById(id).get()
     }

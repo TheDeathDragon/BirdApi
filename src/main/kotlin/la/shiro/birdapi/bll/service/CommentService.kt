@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable
 interface CommentService {
     fun getComments(pageable: Pageable): Page<Comment>
 
+    fun getCommentsCondition(pageable: Pageable, commentInput: CommentInput?): Page<Comment>
+
     fun getCommentById(id: Long): Comment?
 
     fun getCommentsByArticleId(articleId: Long, pageable: Pageable): Page<Comment>
