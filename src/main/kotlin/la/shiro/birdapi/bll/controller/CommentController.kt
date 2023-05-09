@@ -197,10 +197,12 @@ class CommentController(
     fun deleteCommentsByPid(@RequestParam pid: Long): ApiResponse<Long> {
         return ResponseWrapper.success(commentService.deleteCommentsByPid(pid))
     }
-
     @DeleteMapping("/ids")
-    fun deleteCommentsByIds(@RequestParam ids: List<Long>?): ApiResponse<Int> {
-        return ResponseWrapper.success(commentService.deleteCommentsByIds(ids))
+    fun deleteArticleByIds(@RequestBody idsMap: Map<String, List<Long>>): ApiResponse<Int> {
+        idsMap["ids"]?.let {
+            return ResponseWrapper.success(commentService.deleteCommentsByIds(it))
+        }
+        return ResponseWrapper.error("参数错误")
     }
 
 }

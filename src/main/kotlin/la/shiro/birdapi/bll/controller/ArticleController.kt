@@ -1,5 +1,6 @@
 package la.shiro.birdapi.bll.controller
 
+import io.swagger.v3.oas.annotations.media.Schema
 import la.shiro.birdapi.bll.service.ArticleService
 import la.shiro.birdapi.model.entity.Article
 import la.shiro.birdapi.util.ApiResponse
@@ -127,7 +128,10 @@ class ArticleController(
     }
 
     @DeleteMapping("/ids")
-    fun deleteArticleByIds(@RequestParam ids: List<Long>): ApiResponse<Int> {
-        return ResponseWrapper.success(articleService.deleteArticleByIds(ids))
+    fun deleteArticleByIds(@RequestBody idsMap: Map<String, List<Long>>): ApiResponse<Int> {
+        idsMap["ids"]?.let {
+            return ResponseWrapper.success(articleService.deleteArticleByIds(it))
+        }
+        return ResponseWrapper.error("参数错误")
     }
 }

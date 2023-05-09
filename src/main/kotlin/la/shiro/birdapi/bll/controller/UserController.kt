@@ -185,10 +185,12 @@ class UserController(
     fun deleteUserById(@PathVariable id: Long): ApiResponse<Boolean> {
         return ResponseWrapper.success(userService.deleteUserById(id))
     }
-
     @DeleteMapping("/ids")
-    fun deleteUserByIds(@RequestParam ids: List<Long>?): ApiResponse<Int> {
-        return ResponseWrapper.success(userService.deleteUserByIds(ids))
+    fun deleteArticleByIds(@RequestBody idsMap: Map<String, List<Long>>): ApiResponse<Int> {
+        idsMap["ids"]?.let {
+            return ResponseWrapper.success(userService.deleteUserByIds(it))
+        }
+        return ResponseWrapper.error("参数错误")
     }
 
 }

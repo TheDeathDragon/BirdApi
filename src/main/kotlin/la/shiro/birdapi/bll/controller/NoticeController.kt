@@ -97,10 +97,12 @@ class NoticeController(
     fun deleteNotice(@PathVariable id: Long): ApiResponse<Boolean> {
         return ResponseWrapper.success(noticeService.deleteNoticeById(id))
     }
-
     @DeleteMapping("/ids")
-    fun deleteNotices(@RequestParam ids: List<Long>?): ApiResponse<Int> {
-        return ResponseWrapper.success(noticeService.deleteNoticesByIds(ids))
+    fun deleteArticleByIds(@RequestBody idsMap: Map<String, List<Long>>): ApiResponse<Int> {
+        idsMap["ids"]?.let {
+            return ResponseWrapper.success(noticeService.deleteNoticesByIds(it))
+        }
+        return ResponseWrapper.error("参数错误")
     }
 
 }

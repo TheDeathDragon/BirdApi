@@ -91,7 +91,10 @@ class CategoryController(
     }
 
     @DeleteMapping("/ids")
-    fun deleteCategoriesByIds(@RequestParam ids: List<Long>?): ApiResponse<Int> {
-        return ResponseWrapper.success(categoryService.deleteCategoryByIds(ids))
+    fun deleteArticleByIds(@RequestBody idsMap: Map<String, List<Long>>): ApiResponse<Int> {
+        idsMap["ids"]?.let {
+            return ResponseWrapper.success(categoryService.deleteCategoryByIds(it))
+        }
+        return ResponseWrapper.error("参数错误")
     }
 }
