@@ -54,6 +54,10 @@ class CategoryServiceImpl(
         return categoryRepository.findAll(pageable)
     }
 
+    override fun getCategoriesCondition(pageable: Pageable, categoryInput: CategoryInput?): Page<Category>? {
+        return categoryRepository.findCategoriesCondition(pageable,categoryInput)
+    }
+
     override fun getCategoriesByPid(pid: Long): List<Category>? {
         return categoryRepository.getCategoriesByPid(pid)
     }

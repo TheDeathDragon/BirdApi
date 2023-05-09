@@ -29,13 +29,38 @@ class CategoryController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Category>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
             categoryService.getCategories(
                 PageRequest.of(
-                    pageIndex,
+                    pageIndex - 1,
                     pageSize,
                     SortUtils.toSort(sortCode)
                 )
+            )
+        )
+    }
+
+    @PostMapping
+    fun getCategoriesCondition(
+        @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String,
+        @RequestBody categoryInput: CategoryInput?
+    ): ApiResponse<Page<Category>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
+        return ResponseWrapper.success(
+            categoryService.getCategoriesCondition(
+                PageRequest.of(
+                    pageIndex - 1,
+                    pageSize,
+                    SortUtils.toSort(sortCode)
+                ),
+                categoryInput
             )
         )
     }

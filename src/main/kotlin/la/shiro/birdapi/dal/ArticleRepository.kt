@@ -1,12 +1,9 @@
 package la.shiro.birdapi.dal
 
-import la.shiro.birdapi.model.entity.Article
-import la.shiro.birdapi.model.entity.id
-import la.shiro.birdapi.model.entity.likeCount
-import la.shiro.birdapi.model.entity.viewCount
+import la.shiro.birdapi.model.entity.*
+import la.shiro.birdapi.model.input.ArticleInput
 import org.babyfish.jimmer.spring.repository.KRepository
-import org.babyfish.jimmer.sql.kt.ast.expression.eq
-import org.babyfish.jimmer.sql.kt.ast.expression.plus
+import org.babyfish.jimmer.sql.kt.ast.expression.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -51,5 +48,54 @@ interface ArticleRepository : KRepository<Article, Long> {
             where(table.id eq id)
         }.execute() == 1
     }
+
+    fun findArticlesByCondition(pageable: Pageable, articleInput: ArticleInput?): Page<Article> {
+
+        if (articleInput == null) {
+            return findAll(pageable)
+        }
+
+        val title = articleInput.title
+        val categoryId = articleInput.categoryId
+        val userID = articleInput.userId
+        val status = articleInput.status
+        val comment = articleInput.comment
+        val top = articleInput.top
+
+        return pager(pageable).execute(
+            sql.createQuery(Article::class) {
+                title?.takeIf { it.isNotBlank() }?.let {
+                    where(table.title ilike it)
+                }
+                categoryId?.takeIf {
+                    it > 0
+                }?.let {
+                    where(table.categoryId eq it)
+                }
+                userID?.takeIf {
+                    it > 0
+                }?.let {
+                    where(table.userId eq it)
+                }
+                status?.takeIf {
+                    it.isNotBlank()
+                }?.let {
+                    where(table.status eq it)
+                }
+                comment?.takeIf {
+                    it.isNotBlank()
+                }?.let {
+                    where(table.comment eq it)
+                }
+                top?.takeIf {
+                    it.isNotBlank()
+                }?.let {
+                    where(table.top eq it)
+                }
+                orderBy(table.id.desc())
+                select(table)
+            })
+    }
+
 }
 

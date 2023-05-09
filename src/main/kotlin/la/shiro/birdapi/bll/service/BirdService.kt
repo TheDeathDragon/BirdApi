@@ -35,5 +35,6 @@ interface BirdService {
     fun deleteBirdById(id: Long): Boolean
 
     fun deleteBirdByIds(ids: List<Long>?): Int
+    fun getBirdsCondition(pageable: Pageable, birdInput: BirdInput?): Page<Bird>?
 
 }

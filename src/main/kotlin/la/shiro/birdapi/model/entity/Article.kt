@@ -15,7 +15,7 @@ import org.babyfish.jimmer.sql.*
  */
 @Entity
 @Table(name = "article")
-public interface Article : BaseEntity {
+interface Article : BaseEntity {
 
     /**
      *  文章ID */

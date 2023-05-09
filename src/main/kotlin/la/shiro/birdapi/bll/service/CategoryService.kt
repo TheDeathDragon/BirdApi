@@ -23,6 +23,8 @@ interface CategoryService {
 
     fun getCategories(pageable: Pageable): Page<Category>?
 
+    fun getCategoriesCondition(pageable: Pageable, categoryInput: CategoryInput?): Page<Category>?
+
     fun getCategoriesByPid(pid: Long): List<Category>?
 
 }

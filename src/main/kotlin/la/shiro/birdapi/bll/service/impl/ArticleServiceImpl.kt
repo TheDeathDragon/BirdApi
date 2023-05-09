@@ -41,6 +41,10 @@ class ArticleServiceImpl(
         return articleRepository.findAll(pageable)
     }
 
+    override fun getArticlesCondition(pageable: Pageable,articleInput: ArticleInput?): Page<Article> {
+        return articleRepository.findArticlesByCondition(pageable,articleInput)
+    }
+
     override fun getArticlesByCategoryId(categoryId: Long, pageable: Pageable): Page<Article>? {
         return articleRepository.findByCategoryIdOrderByIdDesc(categoryId, pageable)
     }

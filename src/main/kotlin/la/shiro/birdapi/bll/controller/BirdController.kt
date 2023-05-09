@@ -64,8 +64,26 @@ class BirdController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Bird>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
-            birdService.getBirds(PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
+            birdService.getBirds(PageRequest.of(pageIndex - 1, pageSize, SortUtils.toSort(sortCode)))
+        )
+    }
+
+    @PostMapping
+    fun getBirdsCondition(
+        @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String,
+        @RequestBody birdInput: BirdInput?
+    ): ApiResponse<Page<Bird>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
+        return ResponseWrapper.success(
+            birdService.getBirdsCondition(PageRequest.of(pageIndex - 1, pageSize, SortUtils.toSort(sortCode)),birdInput)
         )
     }
 
@@ -76,8 +94,11 @@ class BirdController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Bird>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
-            birdService.getBirdsByName(name, PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
+            birdService.getBirdsByName(name, PageRequest.of(pageIndex - 1, pageSize, SortUtils.toSort(sortCode)))
         )
     }
 
@@ -88,8 +109,11 @@ class BirdController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Bird>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
-            birdService.getBirdsByEnName(enName, PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
+            birdService.getBirdsByEnName(enName, PageRequest.of(pageIndex - 1, pageSize, SortUtils.toSort(sortCode)))
         )
     }
 

@@ -13,7 +13,5 @@ import org.springframework.stereotype.Repository
  * @date 2023-04-07
  */
 @Repository
-interface TagRepository : KRepository<Tag, Long> {
-
-}
+interface TagRepository : KRepository<Tag, Long>
 

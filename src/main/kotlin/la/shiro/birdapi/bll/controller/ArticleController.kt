@@ -40,8 +40,11 @@ class ArticleController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Article>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
-            articleService.getArticleByTitle(title, PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
+            articleService.getArticleByTitle(title, PageRequest.of(pageIndex - 1, pageSize, SortUtils.toSort(sortCode)))
         )
     }
 
@@ -51,8 +54,29 @@ class ArticleController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = "top desc, id desc") sortCode: String
     ): ApiResponse<Page<Article>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
-            articleService.getArticles(PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode)))
+            articleService.getArticles(PageRequest.of(pageIndex - 1, pageSize, SortUtils.toSort(sortCode)))
+        )
+    }
+
+    @PostMapping
+    fun getArticlesCondition(
+        @RequestParam(defaultValue = DEFAULT_PAGE_INDEX) pageIndex: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam(defaultValue = "top desc, id desc") sortCode: String,
+        @RequestBody articleInput: ArticleInput?
+    ): ApiResponse<Page<Article>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
+        return ResponseWrapper.success(
+            articleService.getArticlesCondition(
+                PageRequest.of(pageIndex - 1, pageSize, SortUtils.toSort(sortCode)),
+                articleInput
+            )
         )
     }
 
@@ -63,10 +87,13 @@ class ArticleController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Article>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
             articleService.getArticlesByCategoryId(
                 categoryId,
-                PageRequest.of(pageIndex, pageSize, SortUtils.toSort(sortCode))
+                PageRequest.of(pageIndex - 1, pageSize, SortUtils.toSort(sortCode))
             )
         )
     }

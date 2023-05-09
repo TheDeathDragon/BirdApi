@@ -30,10 +30,13 @@ class CommentController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Comment>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
             commentService.getComments(
                 PageRequest.of(
-                    pageIndex,
+                    pageIndex - 1,
                     pageSize,
                     SortUtils.toSort(sortCode)
                 )
@@ -53,11 +56,14 @@ class CommentController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Comment>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
             commentService.getCommentsByArticleId(
                 articleId,
                 PageRequest.of(
-                    pageIndex,
+                    pageIndex - 1,
                     pageSize,
                     SortUtils.toSort(sortCode)
                 )
@@ -72,11 +78,14 @@ class CommentController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Comment>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
             commentService.getCommentsByUserId(
                 userId,
                 PageRequest.of(
-                    pageIndex,
+                    pageIndex - 1,
                     pageSize,
                     SortUtils.toSort(sortCode)
                 )
@@ -91,11 +100,14 @@ class CommentController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Comment>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
             commentService.getCommentsByPid(
                 pid,
                 PageRequest.of(
-                    pageIndex,
+                    pageIndex - 1,
                     pageSize,
                     SortUtils.toSort(sortCode)
                 )
@@ -110,11 +122,14 @@ class CommentController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String
     ): ApiResponse<Page<Comment>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
             commentService.getCommentsByPublished(
                 published,
                 PageRequest.of(
-                    pageIndex,
+                    pageIndex - 1,
                     pageSize,
                     SortUtils.toSort(sortCode)
                 )

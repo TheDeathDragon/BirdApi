@@ -3,6 +3,8 @@ server:
   tomcat:
     uri-encoding: UTF-8
     max-http-form-post-size: 50MB
+  servlet:
+    context-path: /api/v1
 
 spring:
   datasource:

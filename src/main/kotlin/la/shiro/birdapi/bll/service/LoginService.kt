@@ -10,5 +10,7 @@ import la.shiro.birdapi.util.ApiResponse
 interface LoginService {
     fun login(email: String?, phone: String?, password: String?): ApiResponse<Any>
 
-    fun logout()
+    fun logout():ApiResponse<Any>
+
+    fun getUserInfo(): ApiResponse<Any>
 }

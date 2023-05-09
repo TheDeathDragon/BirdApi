@@ -1,7 +1,7 @@
 package la.shiro.birdapi.bll.interceptor.input
 
 import la.shiro.birdapi.model.entity.Article
-import la.shiro.birdapi.model.entity.ArticleDraft;
+import la.shiro.birdapi.model.entity.ArticleDraft
 import org.babyfish.jimmer.kt.isLoaded
 import org.babyfish.jimmer.sql.DraftInterceptor
 import org.springframework.stereotype.Component

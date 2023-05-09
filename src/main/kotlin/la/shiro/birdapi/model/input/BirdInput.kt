@@ -19,7 +19,7 @@ data class BirdInput(
     var species: Long?,
     var viewCount: Long?,
     var likeCount: Long?,
-    var name: String,
+    var name: String?,
     var enName: String?,
     var introduction: String?,
     var feature: String?,

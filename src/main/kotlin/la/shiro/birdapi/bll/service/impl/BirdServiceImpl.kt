@@ -41,6 +41,10 @@ class BirdServiceImpl(
         return birdRepository.findAll(pageable)
     }
 
+    override fun getBirdsCondition(pageable: Pageable, birdInput: BirdInput?): Page<Bird>? {
+        return birdRepository.findBirdsCondition(pageable, birdInput)
+    }
+
     override fun getBirdsByName(name: String?, pageable: Pageable): Page<Bird>? {
         return name?.let { birdRepository.findByNameContainingOrderByIdDesc(it, pageable) }
     }

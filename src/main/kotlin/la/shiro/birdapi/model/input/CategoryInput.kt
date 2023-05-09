@@ -15,9 +15,9 @@ import org.mapstruct.factory.Mappers
  */
 data class CategoryInput(
     @Schema(hidden = true)
-    var id: Long,
-    var pid: Long,
-    var name: String,
+    var id: Long?,
+    var pid: Long?,
+    var name: String?,
     var description: String?
 ) : Input<Category> {
 

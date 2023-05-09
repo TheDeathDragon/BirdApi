@@ -30,10 +30,13 @@ class ArticleCollectionController(
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
         @RequestParam(defaultValue = DEFAULT_PAGE_SORT_RULE) sortCode: String,
     ): ApiResponse<Page<ArticleCollection>> {
+        if (pageIndex < 1) {
+            return ResponseWrapper.error("当前页数不能小于1")
+        }
         return ResponseWrapper.success(
             articleCollectionService.getArticleCollections(
                 PageRequest.of(
-                    pageIndex,
+                    pageIndex - 1,
                     pageSize,
                     SortUtils.toSort(sortCode)
                 )

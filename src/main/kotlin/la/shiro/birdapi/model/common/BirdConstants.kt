@@ -7,7 +7,7 @@ package la.shiro.birdapi.model.common
  */
 
 // 默认分页起始页
-const val DEFAULT_PAGE_INDEX = "0"
+const val DEFAULT_PAGE_INDEX = "1"
 
 // 默认分页大小
 const val DEFAULT_PAGE_SIZE = "10"

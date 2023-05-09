@@ -21,6 +21,7 @@ interface ArticleService {
     fun getArticlesByCategoryId(categoryId: Long, pageable: Pageable): Page<Article>?
 
     fun getArticles(pageable: Pageable): Page<Article>
+    fun getArticlesCondition(pageable: Pageable, articleInput: ArticleInput?): Page<Article>
 
     fun getHotArticles(): List<Article>?
 

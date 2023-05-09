@@ -44,6 +44,22 @@ class LoginServiceImpl(
         }
     }
 
-    override fun logout() {
+    override fun logout(): ApiResponse<Any> {
+        return if (StpUtil.isLogin()) {
+            StpUtil.logout()
+            ResponseWrapper.success("Logout success", ResponseCodeEnum.SUCCESS.code)
+        } else {
+            ResponseWrapper.error("User not logged in", ResponseCodeEnum.BAD_REQUEST.code)
+        }
+    }
+
+    override fun getUserInfo(): ApiResponse<Any> {
+        try {
+            StpUtil.checkLogin()
+        } catch (e: Exception) {
+            return ResponseWrapper.error("User not logged in", ResponseCodeEnum.BAD_REQUEST.code)
+        }
+        val user = userService.getUserById(StpUtil.getLoginIdAsLong())
+        return ResponseWrapper.success("Get user info success", ResponseCodeEnum.SUCCESS.code, user)
     }
 }
